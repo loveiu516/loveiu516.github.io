@@ -75,7 +75,7 @@
     },
 
       get(){
-      var getURL = "https://script.google.com/macros/s/AKfycbyjx6qscI13SvPz6xdvVF4rZbmbdzdM0YwRxo0G0-mkhBNBJB0/exec";
+      var getURL = "https://script.google.com/macros/s/AKfycbznU39gno3khrRlgTLn7-xZXia4IY2jv31T6_36rh0eJqPG96g/exec";
         $.ajax({
         url: getURL,
         global: false,
@@ -86,11 +86,15 @@
            
             tt = json.tt;
             hh = json.hh;
+            ww = json.ww;
 
               console.log(tt);
               console.log(hh);
+              console.log(ww);
+
               ReactDOM.render(<h1><Label bsStyle="danger">目前溫度: {tt} °C</Label></h1>,document.getElementById('tt_show'));
               ReactDOM.render(<h1><Label bsStyle="danger">目前濕度: {hh} g/m^3</Label></h1>,document.getElementById('hh_show'));
+              ReactDOM.render(<h1><Label bsStyle="danger">目前水位: {ww} </Label></h1>,document.getElementById('ww_show'));
 
             }
         });
@@ -105,7 +109,7 @@
         <Grid>
         <Row className="well">
              <Pager>
-             <Panel header=<h0>A514溫濕度</h0> bsStyle="info">
+             <Panel header=<h0>A514溫濕度+水位</h0> bsStyle="info">
              
 
               <Col xs={6} md={6}>
@@ -115,6 +119,10 @@
               <Col xs={6} md={6}>
               <div id="hh_show"></div>
               </Col>
+
+              <Col xs={12} md={12}>
+              <div id="ww_show"></div>
+              </Col>              
 
              </Panel>
              </Pager>
