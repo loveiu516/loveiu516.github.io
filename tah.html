@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+
+    <title>A514溫濕度</title>
+    <link rel="icon" href="http://i.imgur.com/TUpTQag.png">
+    
+    <!-- jquery -->
+    <script src="http://loveiu516.github.io/jquery.min.js"></script> 
+    <!-- bootstrap -->
+    <link href="http://loveiu516.github.io/bootstrap.min.css" rel="stylesheet">
+    <!-- react -->
+    <script src="http://loveiu516.github.io/react.min.js"></script>
+    <script src="http://loveiu516.github.io/react-dom.min.js"></script>
+    <!-- babel -->
+    <script src="http://loveiu516.github.io/browser.min.js"></script>
+    <!-- react-bootstrap -->
+    <script src="http://loveiu516.github.io/react-bootstrap.min.js"></script>
+  </head>
+
+  <body>
+    
+    <div id = "main"></div>
+
+    <script type="text/babel">
+    var Grid=ReactBootstrap.Grid;
+    var Row=ReactBootstrap.Row;
+    var Col=ReactBootstrap.Col;
+    var ButtonsInstance = ReactBootstrap.ButtonsInstance;
+    var ButtonToolbar = ReactBootstrap.ButtonToolbar;
+    var ButtonInput = ReactBootstrap.ButtonInput;
+    var Button = ReactBootstrap.Button;
+    var Label = ReactBootstrap.Label;
+    var Input = ReactBootstrap.Input;
+    var Tabs = ReactBootstrap.Tabs;
+    var Tab = ReactBootstrap.Tab;
+    var Image = ReactBootstrap.Image;
+    var Glyphicon=ReactBootstrap.Glyphicon;
+    var Jumbotron=ReactBootstrap.Jumbotron;
+    var Pager=ReactBootstrap.Pager;
+    var Panel=ReactBootstrap.Panel;
+    var ListGroupItem=ReactBootstrap.ListGroupItem;
+
+    var tt="";
+    var hh="";
+
+
+    var SetIntervalMixin = {
+      componentWillMount: function() {
+        this.intervals = [];
+      },
+      setInterval: function() {
+        this.intervals.push(setInterval.apply(null, arguments));
+      },
+      componentWillUnmount: function() {
+        this.intervals.forEach(clearInterval);
+      }
+    };
+
+
+    var ButtonInput = React.createClass({
+
+    mixins: [SetIntervalMixin], // Use the mixin
+    getInitialState: function() {
+      return {seconds: 0};
+    },
+
+
+    componentDidMount: function() {
+
+    this.get();
+    
+    this.setInterval(this.get, 3000); // Call a method on the mixin
+    },
+
+      get(){
+      var getURL = "https://script.google.com/macros/s/AKfycbxP6bxZDJGq4TZKwuM7ZYH-ml0QzDZiqH-4Nhuat76tT5OYjp6G/exec";
+        $.ajax({
+        url: getURL,
+        global: false,
+        type: 'GET',
+        dataType: 'json',
+        async: true,
+          success: function(json) {
+           
+            tt = json.tt;
+            hh = json.hh;
+
+              console.log(tt);
+              console.log(hh);
+              ReactDOM.render(<h1><Label bsStyle="danger">目前溫度: {tt} °C</Label></h1>,document.getElementById('tt_show'));
+              ReactDOM.render(<h1><Label bsStyle="danger">目前溫度: {hh} g/m^3</Label></h1>,document.getElementById('hh_show'));
+
+            }
+        });
+      },
+
+
+
+
+
+      render() {
+        return (
+        <Grid>
+        <Row className="well">
+             <Pager>
+             <Panel header=<h0>A514溫濕度</h0> bsStyle="info">
+             
+
+              <Col xs={6} md={6}>
+              <div id="tt_show"></div>
+              </Col>
+
+              <Col xs={6} md={6}>
+              <div id="hh_show"></div>
+              </Col>
+
+             </Panel>
+             </Pager>
+
+          </Row>
+        </Grid>
+        );
+      }
+    });
+    ReactDOM.render(<ButtonInput />, main);
+
+
+    </script>
+  </body>
+</html>
