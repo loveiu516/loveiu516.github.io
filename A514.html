@@ -17,13 +17,16 @@
     <script src="http://loveiu516.github.io/browser.min.js"></script>
     <!-- react-bootstrap -->
     <script src="http://loveiu516.github.io/react-bootstrap.min.js"></script>
+    <!-- googel chart -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
   </head>
-
-  <body>
-    
+  <body style="background-color:#00FFCC;">
     <div id = "main"></div>
-
+    
     <script type="text/babel">
+
     var Grid=ReactBootstrap.Grid;
     var Row=ReactBootstrap.Row;
     var Col=ReactBootstrap.Col;
@@ -58,8 +61,7 @@
         this.intervals.forEach(clearInterval);
       }
     };
-
-
+    
     var ButtonInput = React.createClass({
 
     mixins: [SetIntervalMixin], // Use the mixin
@@ -67,15 +69,14 @@
       return {seconds: 0};
     },
 
-
     componentDidMount: function() {
-
-    this.get();
     
+google.charts.load('current', {'packages': ['gauge']});
+      this.get();
     this.setInterval(this.get, 5000); // Call a method on the mixin
     },
 
-      get(){
+    get(){
       var getURL = "https://script.google.com/macros/s/AKfycbw-rRnX-mOW9psqn8g0rD74FgoSExeeBYqCZp9kx9tTskYBJ4k/exec";
         $.ajax({
         url: getURL,
@@ -89,21 +90,67 @@
             hh = json.hh;
             ww = json.ww;
 
-              console.log(tt);
-              console.log(hh);
-              console.log(ww);
+            console.log(tt);
+            console.log(hh);
+            console.log(ww);
 
-              ReactDOM.render(<h1><Label bsStyle="danger">目前溫度: {tt} °C</Label></h1>,document.getElementById('tt_show'));
-              ReactDOM.render(<h1><Label bsStyle="danger">目前濕度: {hh} %</Label></h1>,document.getElementById('hh_show'));
-              ReactDOM.render(<h1><Label bsStyle="danger">目前水位: {ww} </Label></h1>,document.getElementById('ww_show'));
 
+
+      
+    
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+
+        var datatt = google.visualization.arrayToDataTable(JSON.parse('[["Label","Value"],["溫度",' + tt + ']]'));
+        var datahh = google.visualization.arrayToDataTable(JSON.parse('[["Label","Value"],["濕度",' + hh + ']]'));
+        var dataww = google.visualization.arrayToDataTable(JSON.parse('[["Label","Value"],["水位",' + ww + ']]'));
+
+        var optionstt = {
+          width: 280,
+          height: 280,
+          redFrom: 30,
+          redTo: 40,
+          yellowFrom: 10,
+          yellowTo: 20,
+          minorTicks: 10,
+          min:10,
+          max:40
+        };
+
+        var optionshh = {
+          width: 280,
+          height: 280,
+          redFrom: 80,
+          redTo: 100,
+          minorTicks: 10,
+          min:40,
+          max:100
+        };
+
+        var optionsww = {
+          width: 280,
+          height: 280,
+          minorTicks: 10,
+          min:1024,
+          max:350
+        };
+
+        var charttt = new google.visualization.Gauge(document.getElementById('tt_chart'));
+        charttt.draw(datatt, optionstt);
+
+        var charthh = new google.visualization.Gauge(document.getElementById('hh_chart'));
+        charthh.draw(datahh, optionshh);
+
+        var chartww = new google.visualization.Gauge(document.getElementById('ww_chart'));
+        chartww.draw(dataww, optionsww);
+      }
+
+            ReactDOM.render(<h1><Label bsStyle="danger">目前溫度: {tt} °C</Label></h1>,document.getElementById('tt_show'));
+            ReactDOM.render(<h1><Label bsStyle="danger">目前濕度: {hh} %</Label></h1>,document.getElementById('hh_show'));
+            ReactDOM.render(<h1><Label bsStyle="danger">目前水位: {ww} </Label></h1>,document.getElementById('ww_show'));
             }
-        });
-      },
-
-
-
-
+      });
+    },
 
       render() {
         return (
@@ -111,31 +158,39 @@
         <Row className="well">
              <Pager>
              <Panel header=<h0>A514溫濕度+水位</h0> bsStyle="info">
-             
-
               <Col xs={12} md={4}>
+                
+              <center>
+              <div id="tt_chart"></div>
               <div id="tt_show"></div>
+              </center>
+              
               </Col>
-
               <Col xs={12} md={4}>
+
+              <center>
+              <div id="hh_chart"></div>
               <div id="hh_show"></div>
-              </Col>
+              </center>
 
+              </Col>
               <Col xs={12} md={4}>
+
+              <center>
+              <div id="ww_chart"></div>
               <div id="ww_show"></div>
-              </Col>              
+              </center>
+
+              </Col>
 
              </Panel>
              </Pager>
-
           </Row>
         </Grid>
         );
       }
     });
     ReactDOM.render(<ButtonInput />, main);
-
-
     </script>
   </body>
 </html>
