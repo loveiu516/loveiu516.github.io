@@ -76,7 +76,7 @@
     },
 
       get(){
-      var getURL = "https://script.google.com/macros/s/AKfycbznU39gno3khrRlgTLn7-xZXia4IY2jv31T6_36rh0eJqPG96g/exec";
+      var getURL = "https://script.google.com/macros/s/AKfycbw-rRnX-mOW9psqn8g0rD74FgoSExeeBYqCZp9kx9tTskYBJ4k/exec";
         $.ajax({
         url: getURL,
         global: false,
@@ -94,7 +94,7 @@
               console.log(ww);
 
               ReactDOM.render(<h1><Label bsStyle="danger">目前溫度: {tt} °C</Label></h1>,document.getElementById('tt_show'));
-              ReactDOM.render(<h1><Label bsStyle="danger">目前濕度: {hh} g/m^3</Label></h1>,document.getElementById('hh_show'));
+              ReactDOM.render(<h1><Label bsStyle="danger">目前濕度: {hh} %</Label></h1>,document.getElementById('hh_show'));
               ReactDOM.render(<h1><Label bsStyle="danger">目前水位: {ww} </Label></h1>,document.getElementById('ww_show'));
 
             }
