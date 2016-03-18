@@ -151,29 +151,32 @@
         <Row className="well">
              <Pager>
              <Panel header=<h0>A514溫濕度+水位</h0> bsStyle="info">
+
               <Col xs={12} md={4}>
-                
               <center>
               <div id="tt_chart"></div>
               <div id="tt_show"></div>
               </center>
-              
               </Col>
-              <Col xs={12} md={4}>
 
+              <Col xs={12} md={4}>
               <center>
               <div id="hh_chart"></div>
               <div id="hh_show"></div>
               </center>
-
               </Col>
-              <Col xs={12} md={4}>
 
+              <Col xs={12} md={4}>
               <center>
               <div id="ww_chart"></div>
               <div id="ww_show"></div>
               </center>
+              </Col>
 
+              <Col>
+              <center>
+              <iframe src="http://10.2.8.215:8080/?action=stream" width="640" height="480" scrolling="no"></iframe>
+              </center>
               </Col>
 
              </Panel>
