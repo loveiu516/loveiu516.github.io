@@ -2,10 +2,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-
     <title>A514溫濕度</title>
     <link rel="icon" href="http://i.imgur.com/TUpTQag.png">
-    
     <!-- jquery -->
     <script src="http://loveiu516.github.io/jquery.min.js"></script> 
     <!-- bootstrap -->
@@ -20,13 +18,11 @@
     <!-- googel chart -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-
   </head>
   <body style="background-color:#00FFCC;">
     <div id = "main"></div>
     
     <script type="text/babel">
-
     var Grid=ReactBootstrap.Grid;
     var Row=ReactBootstrap.Row;
     var Col=ReactBootstrap.Col;
@@ -44,12 +40,11 @@
     var Pager=ReactBootstrap.Pager;
     var Panel=ReactBootstrap.Panel;
     var ListGroupItem=ReactBootstrap.ListGroupItem;
-
+    
     var tt="";
     var hh="";
     var ww="";
-
-
+    
     var SetIntervalMixin = {
       componentWillMount: function() {
         this.intervals = [];
@@ -63,16 +58,15 @@
     };
     
     var ButtonInput = React.createClass({
-
+      
     mixins: [SetIntervalMixin], // Use the mixin
     getInitialState: function() {
       return {seconds: 0};
     },
 
     componentDidMount: function() {
-    
-google.charts.load('current', {'packages': ['gauge']});
-      this.get();
+    google.charts.load('current', {'packages': ['gauge']});
+    this.get();
     this.setInterval(this.get, 5000); // Call a method on the mixin
     },
 
@@ -85,22 +79,17 @@ google.charts.load('current', {'packages': ['gauge']});
         dataType: 'json',
         async: true,
           success: function(json) {
-           
             tt = json.tt;
             hh = json.hh;
             ww = json.ww;
-
+            
             console.log(tt);
             console.log(hh);
             console.log(ww);
-
-
-
-      
-    
+            
       google.charts.setOnLoadCallback(drawChart);
       function drawChart() {
-
+        
         var datatt = google.visualization.arrayToDataTable(JSON.parse('[["Label","Value"],["溫度",' + tt + ']]'));
         var datahh = google.visualization.arrayToDataTable(JSON.parse('[["Label","Value"],["濕度",' + hh + ']]'));
         var dataww = google.visualization.arrayToDataTable(JSON.parse('[["Label","Value"],["水位",' + ww + ']]'));
@@ -145,12 +134,12 @@ google.charts.load('current', {'packages': ['gauge']});
 
         var chartww = new google.visualization.Gauge(document.getElementById('ww_chart'));
         chartww.draw(dataww, optionsww);
-      }
-
-            ReactDOM.render(<h1><Label bsStyle="danger">目前溫度: {tt} °C</Label></h1>,document.getElementById('tt_show'));
-            ReactDOM.render(<h1><Label bsStyle="danger">目前濕度: {hh} %</Label></h1>,document.getElementById('hh_show'));
-            ReactDOM.render(<h1><Label bsStyle="danger">目前水位: {ww} </Label></h1>,document.getElementById('ww_show'));
-            }
+        }
+        
+        ReactDOM.render(<h1><Label bsStyle="danger">目前溫度: {tt} °C</Label></h1>,document.getElementById('tt_show'));
+        ReactDOM.render(<h1><Label bsStyle="danger">目前濕度: {hh} %</Label></h1>,document.getElementById('hh_show'));
+        ReactDOM.render(<h1><Label bsStyle="danger">目前水位: {ww} </Label></h1>,document.getElementById('ww_show'));
+        }
       });
     },
 
