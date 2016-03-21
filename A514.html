@@ -81,11 +81,10 @@ google.charts.load('current', {packages:['gauge','corechart','line']});
     },
 
     componentDidMount: function() {
-
-
-      this.get();
       this.gethistory();
-      this.setInterval(this.get, 5000); // Call a method on the mixin
+      this.get();
+      this.setInterval(this.get, 10000); // Call a method on the mixin
+      
     },
 
 
