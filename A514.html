@@ -21,18 +21,11 @@
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
     <script type="text/javascript">
-  google.load("search", "1");
-  google.load("jquery", "1.4.2");
-  google.load("jqueryui", "1.7.2");
-</script>
-
-<script type="text/javascript">
-google.charts.load('current', {packages:['gauge','corechart','line']});
-</script>
-
-
+    google.charts.load('current', {packages:['gauge','corechart','line']});
+    </script>
   </head>
-  <body style="background-color:#00FFCC;">
+
+    <body style="background-color:#00FFCC;">
     <div id = "main"></div>
     
     <script type="text/babel">
@@ -60,6 +53,7 @@ google.charts.load('current', {packages:['gauge','corechart','line']});
 
     var tthis="";
     var hhhis="";
+    var wwhis="";
     
     var SetIntervalMixin = {
       componentWillMount: function() {
@@ -224,6 +218,36 @@ google.charts.load('current', {packages:['gauge','corechart','line']});
               }
             };
             var chart = new google.visualization.LineChart(document.getElementById('hh_his'));
+            chart.draw(data, options);
+            }
+          }
+        });
+
+
+        $.ajax({
+        url: "https://script.google.com/macros/s/AKfycbze-Tft6-HECmhHZxuVe6TyEW1Noo2jPCP_5Y-9fBXdk9xgeuh5/exec?ww=1",
+        global: false,
+        type: 'GET',
+        dataType: 'text',
+        async: true,
+          success: function(text) {
+            wwhis = JSON.parse("[" + text + "]");
+            console.log(wwhis);
+            google.charts.setOnLoadCallback(drawBasic);
+            function drawBasic() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', 'Time');
+            data.addColumn('number', 'val');
+            data.addRows(wwhis);
+            var options = {
+              hAxis: {
+                title: 'Time'
+              },
+              vAxis: {
+                title: 'val'
+              }
+            };
+            var chart = new google.visualization.LineChart(document.getElementById('ww_his'));
             chart.draw(data, options);
             }
           }
