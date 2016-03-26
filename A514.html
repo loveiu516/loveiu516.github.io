@@ -50,6 +50,7 @@
     var tt="";
     var hh="";
     var ww="";
+    var pp="";
 
     var tthis="";
     var hhhis="";
@@ -96,10 +97,12 @@
             tt = json.tt;
             hh = json.hh;
             ww = json.ww;
+            pp = json.pp;
             
             console.log(tt);
             console.log(hh);
             console.log(ww);
+            console.log(pp);
             
             google.charts.setOnLoadCallback(drawChart);
 
@@ -108,6 +111,7 @@
         var datatt = google.visualization.arrayToDataTable(JSON.parse('[["Label","Value"],["溫度",' + tt + ']]'));
         var datahh = google.visualization.arrayToDataTable(JSON.parse('[["Label","Value"],["濕度",' + hh + ']]'));
         var dataww = google.visualization.arrayToDataTable(JSON.parse('[["Label","Value"],["水位",' + ww + ']]'));
+        var datapp = google.visualization.arrayToDataTable(JSON.parse('[["Label","Value"],["瓦數",' + pp + ']]'));
 
         var optionstt = {
           width: 280,
@@ -141,6 +145,16 @@
           max:350
         };
 
+        var optionspp = {
+          width: 280,
+          height: 280,
+          greenFrom: 2,
+          greenTo:50,
+          minorTicks: 10,
+          min:0,
+          max:1000
+        };
+
         var charttt = new google.visualization.Gauge(document.getElementById('tt_chart'));
         charttt.draw(datatt, optionstt);
 
@@ -149,11 +163,15 @@
 
         var chartww = new google.visualization.Gauge(document.getElementById('ww_chart'));
         chartww.draw(dataww, optionsww);
+
+        var chartpp = new google.visualization.Gauge(document.getElementById('pp_chart'));
+        chartpp.draw(datapp, optionspp);
         }
         
         ReactDOM.render(<h1><Label bsStyle="danger">目前溫度: {tt} °C</Label></h1>,document.getElementById('tt_show'));
         ReactDOM.render(<h1><Label bsStyle="danger">目前濕度: {hh} %</Label></h1>,document.getElementById('hh_show'));
-        ReactDOM.render(<h1><Label bsStyle="danger">目前水位: {ww} </Label></h1>,document.getElementById('ww_show'));
+        ReactDOM.render(<h1><Label bsStyle="danger">目前水位: {ww} Val</Label></h1>,document.getElementById('ww_show'));
+        ReactDOM.render(<h1><Label bsStyle="danger">目前瓦數: {pp} W</Label></h1>,document.getElementById('pp_show'));
         }
       });
     },
@@ -282,6 +300,13 @@
               <center>
               <div id="ww_chart"></div>
               <div id="ww_show"></div>
+              </center>
+              </Col>
+
+              <Col xs={12} md={12}>
+              <center>
+              <div id="pp_chart"></div>
+              <div id="pp_show"></div>
               </center>
               </Col>
 
