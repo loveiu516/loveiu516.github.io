@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+
+    <title>大葉電源控制</title>
+    <link rel="icon" href="http://i.imgur.com/ApQHChT.jpg">
+    
+    <!-- jquery -->
+    <script src="http://loveiu516.github.io/jquery.min.js"></script> 
+    <!-- bootstrap -->
+    <link href="http://loveiu516.github.io/bootstrap.min.css" rel="stylesheet">
+    <!-- react -->
+    <script src="http://loveiu516.github.io/react.min.js"></script>
+    <script src="http://loveiu516.github.io/react-dom.min.js"></script>
+    <!-- babel -->
+    <script src="http://loveiu516.github.io/browser.min.js"></script>
+    <!-- react-bootstrap -->
+    <script src="http://loveiu516.github.io/react-bootstrap.min.js"></script>
+  </head>
+
+  <body>
+    
+    <div id = "main"></div>
+
+    <script type="text/babel">
+    var Grid=ReactBootstrap.Grid;
+    var Row=ReactBootstrap.Row;
+    var Col=ReactBootstrap.Col;
+    var ButtonsInstance = ReactBootstrap.ButtonsInstance;
+    var ButtonToolbar = ReactBootstrap.ButtonToolbar;
+    var ButtonInput = ReactBootstrap.ButtonInput;
+    var Button = ReactBootstrap.Button;
+    var Label = ReactBootstrap.Label;
+    var Input = ReactBootstrap.Input;
+    var Tabs = ReactBootstrap.Tabs;
+    var Tab = ReactBootstrap.Tab;
+    var Image = ReactBootstrap.Image;
+    var Glyphicon=ReactBootstrap.Glyphicon;
+    var Jumbotron=ReactBootstrap.Jumbotron;
+    var Pager=ReactBootstrap.Pager;
+    var Panel=ReactBootstrap.Panel;
+    var ListGroupItem=ReactBootstrap.ListGroupItem;
+
+    var status="";
+    var light1 = "";
+    var light2 = "";
+    var light3 = "";
+    var light4 = "";
+    var light5 = "";
+    var light6 = "";
+    var light7 = "";
+    var light8 = "";
+
+    var set_timer = "https://script.google.com/macros/s/AKfycbyXLXdaKfONgglmMprl9axrrEpNjlA08tPy34rgB6hKuMhOVaI/exec";
+    var getstatusURL = "https://spreadsheets.google.com/feeds/list/1rAUiMcEfpVdpEu-4RhCvxMDrjFKjvEWBMQK-Cv10D48/1/public/values?alt=json";
+    var getlightURL = "https://script.google.com/macros/s/AKfycbwe3rdtb74pdRUd_xjm3QNBqM1_Mad5dTEbThE5NUQp6TZJc7A/exec";
+
+    var SetIntervalMixin = {
+      componentWillMount: function() {
+        this.intervals = [];
+      },
+      setInterval: function() {
+        this.intervals.push(setInterval.apply(null, arguments));
+      },
+      componentWillUnmount: function() {
+        this.intervals.forEach(clearInterval);
+      }
+    };
+
+    var ButtonInput = React.createClass({
+      
+    mixins: [SetIntervalMixin],
+    getInitialState: function() {
+      return {seconds: 0};
+    },
+
+    componentDidMount: function() {
+      this.getstatus();
+      this.getlight();
+
+      this.setInterval(this.getstatus, 10000);
+      this.setInterval(this.getlight, 10000);
+      
+    },
+
+    
+      getstatus(){      
+        $.ajax({
+        url: getstatusURL,
+        global: false,
+        type: 'GET',
+        dataType: 'json',
+        async: true,
+          success: function(json) {
+            var e = json.feed.entry;
+            var l = e.length;
+            var i, entry;
+            for (i = 0; i < l; i++) {
+              entry = e[i];
+              status = entry.gsx$status.$t;
+              if (status==0) {
+              ReactDOM.render(<h1><Label bsStyle="danger">目前狀態:自動控制</Label></h1>,document.getElementById('status_show'));
+              }
+              if (status==1) {
+              ReactDOM.render(<h1><Label bsStyle="danger">目前狀態:手動控制</Label></h1>,document.getElementById('status_show'));
+              }
+            }
+          }
+        });
+      },
+
+      getlight(){      
+        $.ajax({
+        url: getlightURL,
+        global: false,
+        type: 'GET',
+        dataType: 'json',
+        async: true,
+          success: function(json) {
+            light1 = json.light1;
+            light2 = json.light2;
+            light3 = json.light3;
+            light4 = json.light4;
+            light5 = json.light5;
+            light6 = json.light6;
+            light7 = json.light7;
+            light8 = json.light8;
+
+            if (light1==0) {
+            ReactDOM.render(<h1><Label bsStyle="danger">燈1:關</Label></h1>,document.getElementById('light_1'));
+            }
+            if (light1==1) {
+            ReactDOM.render(<h1><Label bsStyle="danger">燈1:開</Label></h1>,document.getElementById('light_1'));
+            }
+
+            if (light2==0) {
+            ReactDOM.render(<h1><Label bsStyle="danger">燈2:關</Label></h1>,document.getElementById('light_2'));
+            }
+            if (light2==1) {
+            ReactDOM.render(<h1><Label bsStyle="danger">燈2:開</Label></h1>,document.getElementById('light_2'));
+            }
+
+            if (light3==0) {
+            ReactDOM.render(<h1><Label bsStyle="danger">燈3:關</Label></h1>,document.getElementById('light_3'));
+            }
+            if (light3==1) {
+            ReactDOM.render(<h1><Label bsStyle="danger">燈3:開</Label></h1>,document.getElementById('light_3'));
+            }
+
+            if (light4==0) {
+            ReactDOM.render(<h1><Label bsStyle="danger">燈4:關</Label></h1>,document.getElementById('light_4'));
+            }
+            if (light4==1) {
+            ReactDOM.render(<h1><Label bsStyle="danger">燈4:開</Label></h1>,document.getElementById('light_4'));
+            }
+
+            if (light5==0) {
+            ReactDOM.render(<h1><Label bsStyle="danger">燈5:關</Label></h1>,document.getElementById('light_5'));
+            }
+            if (light5==1) {
+            ReactDOM.render(<h1><Label bsStyle="danger">燈5:開</Label></h1>,document.getElementById('light_5'));
+            }
+
+            if (light6==0) {
+            ReactDOM.render(<h1><Label bsStyle="danger">燈6:關</Label></h1>,document.getElementById('light_6'));
+            }
+            if (light6==1) {
+            ReactDOM.render(<h1><Label bsStyle="danger">燈6:開</Label></h1>,document.getElementById('light_6'));
+            }
+
+            if (light7==0) {
+            ReactDOM.render(<h1><Label bsStyle="danger">燈7:關</Label></h1>,document.getElementById('light_7'));
+            }
+            if (light7==1) {
+            ReactDOM.render(<h1><Label bsStyle="danger">燈7:開</Label></h1>,document.getElementById('light_7'));
+            }
+
+            if (light8==0) {
+            ReactDOM.render(<h1><Label bsStyle="danger">燈8:關</Label></h1>,document.getElementById('light_8'));
+            }
+            if (light8==1) {
+            ReactDOM.render(<h1><Label bsStyle="danger">燈8:開</Label></h1>,document.getElementById('light_8'));
+            }
+            
+          }
+        });
+      },
+
+      autoctrl() {
+        $.ajax({
+          url: set_timer,
+          global: false,
+          type: 'GET',
+          dataType: 'json',
+          data: {
+            "status": 0,
+            },
+            async: true,
+            success: function() {
+            }
+        });
+      },
+
+      manctrl() {
+        $.ajax({
+          url: set_timer,
+          global: false,
+          type: 'GET',
+          dataType: 'json',
+          data: {
+            "status": 1,
+            },
+            async: true,
+            success: function() {
+            }
+        });
+      },
+
+
+
+      light1on() {
+      $.ajax({
+          url: set_timer,
+          global: false,
+          type: 'GET',
+          dataType: 'json',
+          data: {
+            "light1": 1,
+            },
+            async: true,
+            success: function() {
+            }
+        });
+      },
+
+      light1off(){
+      $.ajax({
+          url: set_timer,
+          global: false,
+          type: 'GET',
+          dataType: 'json',
+          data: {
+            "light1": 0,
+            },
+            async: true,
+            success: function() {
+            }
+        });
+      },
+
+      light2on() {
+      $.ajax({
+          url: set_timer,
+          global: false,
+          type: 'GET',
+          dataType: 'json',
+          data: {
+            "light2": 1,
+            },
+            async: true,
+            success: function() {
+            }
+        });
+      },
+
+      light2off(){
+      $.ajax({
+          url: set_timer,
+          global: false,
+          type: 'GET',
+          dataType: 'json',
+          data: {
+            "light2": 0,
+            },
+            async: true,
+            success: function() {
+            }
+        });
+      },
+
+      light3on() {
+      $.ajax({
+          url: set_timer,
+          global: false,
+          type: 'GET',
+          dataType: 'json',
+          data: {
+            "light3": 1,
+            },
+            async: true,
+            success: function() {
+            }
+        });
+      },
+
+      light3off(){
+      $.ajax({
+          url: set_timer,
+          global: false,
+          type: 'GET',
+          dataType: 'json',
+          data: {
+            "light3": 0,
+            },
+            async: true,
+            success: function() {
+            }
+        });
+      },
+
+      light4on() {
+      $.ajax({
+          url: set_timer,
+          global: false,
+          type: 'GET',
+          dataType: 'json',
+          data: {
+            "light4": 1,
+            },
+            async: true,
+            success: function() {
+            }
+        });
+      },
+
+      light4off(){
+      $.ajax({
+          url: set_timer,
+          global: false,
+          type: 'GET',
+          dataType: 'json',
+          data: {
+            "light4": 0,
+            },
+            async: true,
+            success: function() {
+            }
+        });
+      },
+
+      light5on() {
+      $.ajax({
+          url: set_timer,
+          global: false,
+          type: 'GET',
+          dataType: 'json',
+          data: {
+            "light5": 1,
+            },
+            async: true,
+            success: function() {
+            }
+        });
+      },
+
+      light5off(){
+      $.ajax({
+          url: set_timer,
+          global: false,
+          type: 'GET',
+          dataType: 'json',
+          data: {
+            "light5": 0,
+            },
+            async: true,
+            success: function() {
+            }
+        });
+      },
+
+      light6on() {
+      $.ajax({
+          url: set_timer,
+          global: false,
+          type: 'GET',
+          dataType: 'json',
+          data: {
+            "light6": 1,
+            },
+            async: true,
+            success: function() {
+            }
+        });
+      },
+
+      light6off(){
+      $.ajax({
+          url: set_timer,
+          global: false,
+          type: 'GET',
+          dataType: 'json',
+          data: {
+            "light6": 0,
+            },
+            async: true,
+            success: function() {
+            }
+        });
+      },
+
+      light7on() {
+      $.ajax({
+          url: set_timer,
+          global: false,
+          type: 'GET',
+          dataType: 'json',
+          data: {
+            "light7": 1,
+            },
+            async: true,
+            success: function() {
+            }
+        });
+      },
+
+      light7off(){
+      $.ajax({
+          url: set_timer,
+          global: false,
+          type: 'GET',
+          dataType: 'json',
+          data: {
+            "light7": 0,
+            },
+            async: true,
+            success: function() {
+            }
+        });
+      },
+
+      light8on() {
+      $.ajax({
+          url: set_timer,
+          global: false,
+          type: 'GET',
+          dataType: 'json',
+          data: {
+            "light8": 1,
+            },
+            async: true,
+            success: function() {
+            }
+        });
+      },
+
+      light8off(){
+      $.ajax({
+          url: set_timer,
+          global: false,
+          type: 'GET',
+          dataType: 'json',
+          data: {
+            "light8": 0,
+            },
+            async: true,
+            success: function() {
+            }
+        });
+      },
+
+
+
+      render() {
+        return (
+        <Grid>
+        <Row className="well">
+             <Pager>
+             <Panel header=<h0>切換控制模式</h0> bsStyle="info">
+              <Col xs={6} md={6}>
+              <Button bsStyle="primary" bsSize="large" onClick={this.autoctrl} block>自動控制</Button>
+              </Col>
+              <Col xs={6} md={6}>
+              <Button bsStyle="primary" bsSize="large" onClick={this.manctrl} block>手動控制</Button>
+              </Col>
+              <Col xs={12} md={12}>
+              <div id="status_show"></div>
+              </Col>
+
+              <Col xs={3} md={3}>
+              <div id="light_1"></div>
+              </Col>          
+              <Col xs={3} md={3}>
+              <div id="light_2"></div>
+              </Col>
+              <Col xs={3} md={3}>
+              <div id="light_3"></div>
+              </Col>
+              <Col xs={3} md={3}>
+              <div id="light_4"></div>
+              </Col>
+              
+              <Col xs={3} md={3}>
+              <div id="light_5"></div>
+              </Col>
+              <Col xs={3} md={3}>
+              <div id="light_6"></div>
+              </Col>
+              <Col xs={3} md={3}>
+              <div id="light_7"></div>
+              </Col>
+              <Col xs={3} md={3}>
+              <div id="light_8"></div>
+              </Col>
+             </Panel>
+             </Pager>
+
+
+            <Col xs={6} md={6}>
+            <Panel header=<h0>light_1</h0> bsStyle="info">
+            <Col xs={6} md={6}>
+              <Button bsStyle="success" bsSize="large" onClick={this.light1on} block>ON</Button>
+            </Col>
+
+            <Col xs={6} md={6}>
+              <Button bsStyle="danger" bsSize="large" onClick={this.light1off} block>OFF</Button>
+            </Col>
+            </Panel>
+            </Col>
+
+            <Col xs={6} md={6}>
+            <Panel header=<h0>light_2</h0> bsStyle="info">
+            <Col xs={6} md={6}>
+              <Button bsStyle="success" bsSize="large" onClick={this.light2on} block>ON</Button>
+            </Col>
+
+            <Col xs={6} md={6}>
+              <Button bsStyle="danger" bsSize="large" onClick={this.light2off} block>OFF</Button>
+            </Col>
+            </Panel>
+            </Col>
+
+            <Col xs={6} md={6}>
+            <Panel header=<h0>light_3</h0> bsStyle="info">
+            <Col xs={6} md={6}>
+              <Button bsStyle="success" bsSize="large" onClick={this.light3on} block>ON</Button>
+            </Col>
+
+            <Col xs={6} md={6}>
+              <Button bsStyle="danger" bsSize="large" onClick={this.light3off} block>OFF</Button>
+            </Col>
+            </Panel>
+            </Col>
+
+            <Col xs={6} md={6}>
+            <Panel header=<h0>light_4</h0> bsStyle="info">
+            <Col xs={6} md={6}>
+              <Button bsStyle="success" bsSize="large" onClick={this.light4on} block>ON</Button>
+            </Col>
+
+            <Col xs={6} md={6}>
+              <Button bsStyle="danger" bsSize="large" onClick={this.light4off} block>OFF</Button>
+            </Col>
+            </Panel>
+            </Col>
+
+            <Col xs={6} md={6}>
+            <Panel header=<h0>light_5</h0> bsStyle="info">
+            <Col xs={6} md={6}>
+              <Button bsStyle="success" bsSize="large" onClick={this.light5on} block>ON</Button>
+            </Col>
+
+            <Col xs={6} md={6}>
+              <Button bsStyle="danger" bsSize="large" onClick={this.light5off} block>OFF</Button>
+            </Col>
+            </Panel>
+            </Col>
+
+            <Col xs={6} md={6}>
+            <Panel header=<h0>light_6</h0> bsStyle="info">
+            <Col xs={6} md={6}>
+              <Button bsStyle="success" bsSize="large" onClick={this.light6on} block>ON</Button>
+            </Col>
+
+            <Col xs={6} md={6}>
+              <Button bsStyle="danger" bsSize="large" onClick={this.light6off} block>OFF</Button>
+            </Col>
+            </Panel>
+            </Col>
+
+            <Col xs={6} md={6}>
+            <Panel header=<h0>light_7</h0> bsStyle="info">
+            <Col xs={6} md={6}>
+              <Button bsStyle="success" bsSize="large" onClick={this.light7on} block>ON</Button>
+            </Col>
+
+            <Col xs={6} md={6}>
+              <Button bsStyle="danger" bsSize="large" onClick={this.light7off} block>OFF</Button>
+            </Col>
+            </Panel>
+            </Col>
+
+            <Col xs={6} md={6}>
+            <Panel header=<h0>light_8</h0> bsStyle="info">
+            <Col xs={6} md={6}>
+              <Button bsStyle="success" bsSize="large" onClick={this.light8on} block>ON</Button>
+            </Col>
+
+            <Col xs={6} md={6}>
+              <Button bsStyle="danger" bsSize="large" onClick={this.light8off} block>OFF</Button>
+            </Col>
+            </Panel>
+            </Col>
+
+          </Row>
+        </Grid>
+        );
+      }
+    });
+    ReactDOM.render(<ButtonInput />, main);
+
+
+    </script>
+  </body>
+</html>
