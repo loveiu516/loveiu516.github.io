@@ -57,13 +57,13 @@
     var wwhis="";
     
     var SetIntervalMixin = {
-      componentWillMount: function() {
+      componentWillMount(){
         this.intervals = [];
       },
-      setInterval: function() {
+      setInterval(){
         this.intervals.push(setInterval.apply(null, arguments));
       },
-      componentWillUnmount: function() {
+      componentWillUnmount(){
         this.intervals.forEach(clearInterval);
       }
     };
@@ -71,21 +71,17 @@
     var ButtonInput = React.createClass({
       
     mixins: [SetIntervalMixin], // Use the mixin
-    getInitialState: function() {
+    getInitialState(){
       return {seconds: 0};
     },
 
-    componentDidMount: function() {
+    componentDidMount(){
       this.gethistory();
       this.get();
-      this.setInterval(this.get, 10000); // Call a method on the mixin
-      
+      this.setInterval(this.get, 10000);
     },
-
-
-
+    
     get(){
-
       var getURL = "https://script.google.com/macros/s/AKfycbw-rRnX-mOW9psqn8g0rD74FgoSExeeBYqCZp9kx9tTskYBJ4k/exec";
         $.ajax({
         url: getURL,
@@ -175,13 +171,8 @@
         }
       });
     },
-
-
-
-
-
+    
     gethistory(){
-
         $.ajax({
         url: "https://script.google.com/macros/s/AKfycbze-Tft6-HECmhHZxuVe6TyEW1Noo2jPCP_5Y-9fBXdk9xgeuh5/exec?tt=1",
         global: false,
@@ -211,7 +202,6 @@
           }
         });
 
-
         $.ajax({
         url: "https://script.google.com/macros/s/AKfycbze-Tft6-HECmhHZxuVe6TyEW1Noo2jPCP_5Y-9fBXdk9xgeuh5/exec?hh=1",
         global: false,
@@ -240,7 +230,6 @@
             }
           }
         });
-
 
         $.ajax({
         url: "https://script.google.com/macros/s/AKfycbze-Tft6-HECmhHZxuVe6TyEW1Noo2jPCP_5Y-9fBXdk9xgeuh5/exec?ww=1",
@@ -272,8 +261,6 @@
         });
 
     },
-
-
 
       render() {
         return (
