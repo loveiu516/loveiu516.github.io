@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>P104溫濕度</title>
+    <link rel="icon" href="http://i.imgur.com/TUpTQag.png">
+    <!-- jquery -->
+    <script src="http://loveiu516.github.io/jquery.min.js"></script> 
+    <!-- bootstrap -->
+    <link href="http://loveiu516.github.io/bootstrap.min.css" rel="stylesheet">
+    <!-- react -->
+    <script src="http://loveiu516.github.io/react.min.js"></script>
+    <script src="http://loveiu516.github.io/react-dom.min.js"></script>
+    <!-- babel -->
+    <script src="http://loveiu516.github.io/browser.min.js"></script>
+    <!-- react-bootstrap -->
+    <script src="http://loveiu516.github.io/react-bootstrap.min.js"></script>
+    <!-- googel chart -->
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+    <script type="text/javascript">
+    google.charts.load('current', {packages:['gauge','corechart','line']});
+    </script>
+  </head>
+
+    <body style="background-color:#00FFCC;">
+    <div id = "main"></div>
+    
+    <script type="text/babel">
+    var Grid=ReactBootstrap.Grid;
+    var Row=ReactBootstrap.Row;
+    var Col=ReactBootstrap.Col;
+    var ButtonsInstance = ReactBootstrap.ButtonsInstance;
+    var ButtonToolbar = ReactBootstrap.ButtonToolbar;
+    var ButtonInput = ReactBootstrap.ButtonInput;
+    var Button = ReactBootstrap.Button;
+    var Label = ReactBootstrap.Label;
+    var Input = ReactBootstrap.Input;
+    var Tabs = ReactBootstrap.Tabs;
+    var Tab = ReactBootstrap.Tab;
+    var Image = ReactBootstrap.Image;
+    var Glyphicon=ReactBootstrap.Glyphicon;
+    var Jumbotron=ReactBootstrap.Jumbotron;
+    var Pager=ReactBootstrap.Pager;
+    var Panel=ReactBootstrap.Panel;
+    var ListGroupItem=ReactBootstrap.ListGroupItem;
+    
+    var tt="";
+    var hh="";
+    // var ww="";
+    // var pp="";
+
+    var tthis="";
+    var hhhis="";
+    // var wwhis="";
+
+    var get_sensor = "https://script.google.com/macros/s/AKfycbzJp1yCIkpYhHneBkoxssK3mPy8x76tm8c7zAmzFLtvJr62Uxo/exec";
+    var get_sensor_history = "https://script.google.com/macros/s/AKfycbzRh1-75x-DDX-_SNLuvYjm-_Hof43uStDD91qlCWYWJokJHW0c/exec";
+
+
+    
+    var SetIntervalMixin = {
+      componentWillMount(){
+        this.intervals = [];
+      },
+      setInterval(){
+        this.intervals.push(setInterval.apply(null, arguments));
+      },
+      componentWillUnmount(){
+        this.intervals.forEach(clearInterval);
+      }
+    };
+    
+    var ButtonInput = React.createClass({
+      
+    mixins: [SetIntervalMixin],
+    getInitialState(){
+      return {seconds: 0};
+    },
+
+    componentDidMount(){
+      this.gethistory();
+      this.get();
+      this.setInterval(this.get, 10000);
+    },
+
+    
+    get(){
+      
+        $.ajax({
+        url: get_sensor,
+        global: false,
+        type: 'GET',
+        dataType: 'json',
+        async: true,
+          success: function(json) {
+            tt = json.tt;
+            hh = json.hh;
+
+            
+            console.log(tt);
+            console.log(hh);
+
+            
+            google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        
+        var datatt = google.visualization.arrayToDataTable(JSON.parse('[["Label","Value"],["溫度",' + tt + ']]'));
+        var datahh = google.visualization.arrayToDataTable(JSON.parse('[["Label","Value"],["濕度",' + hh + ']]'));
+
+        var optionstt = {
+          width: 280,
+          height: 280,
+          redFrom: 30,
+          redTo: 40,
+          yellowFrom: 10,
+          yellowTo: 20,
+          minorTicks: 10,
+          min:10,
+          max:40
+        };
+
+        var optionshh = {
+          width: 280,
+          height: 280,
+          redFrom: 80,
+          redTo: 100,
+          minorTicks: 10,
+          min:40,
+          max:100
+        };
+
+        var charttt = new google.visualization.Gauge(document.getElementById('tt_chart'));
+        charttt.draw(datatt, optionstt);
+
+        var charthh = new google.visualization.Gauge(document.getElementById('hh_chart'));
+        charthh.draw(datahh, optionshh);
+        }
+
+        
+        ReactDOM.render(<h1><Label bsStyle="danger">目前溫度: {tt} °C</Label></h1>,document.getElementById('tt_show'));
+        ReactDOM.render(<h1><Label bsStyle="danger">目前濕度: {hh} %</Label></h1>,document.getElementById('hh_show'));
+
+        }
+      });
+    },
+    
+    gethistory(){
+        $.ajax({
+        url: get_sensor_history + "?tt=1",
+        global: false,
+        type: 'GET',
+        dataType: 'text',
+        async: true,
+          success: function(text) {
+            tthis = JSON.parse("[" + text + "]");
+            console.log(tthis);
+            google.charts.setOnLoadCallback(drawBasic);
+            function drawBasic() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', 'Time');
+            data.addColumn('number', '°C');
+            data.addRows(tthis);
+            var options = {
+              hAxis: {
+                title: 'Time'
+              },
+              vAxis: {
+                title: '°C'
+              }
+            };
+            var chart = new google.visualization.LineChart(document.getElementById('tt_his'));
+            chart.draw(data, options);
+            }
+          }
+        });
+
+        $.ajax({
+        url: get_sensor_history + "?hh=1",
+        global: false,
+        type: 'GET',
+        dataType: 'text',
+        async: true,
+          success: function(text) {
+            hhhis = JSON.parse("[" + text + "]");
+            console.log(hhhis);
+            google.charts.setOnLoadCallback(drawBasic);
+            function drawBasic() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', 'Time');
+            data.addColumn('number', '%');
+            data.addRows(hhhis);
+            var options = {
+              hAxis: {
+                title: 'Time'
+              },
+              vAxis: {
+                title: '%'
+              }
+            };
+            var chart = new google.visualization.LineChart(document.getElementById('hh_his'));
+            chart.draw(data, options);
+            }
+          }
+        });
+
+
+    },
+
+      render() {
+        return (
+        <Grid>
+        <Row className="well">
+             <Pager>
+             <Panel header=<h0>P104感測器</h0> bsStyle="info">
+
+              <Col xs={12} md={6}>
+              <center>
+              <div id="tt_chart"></div>
+              <div id="tt_show"></div>
+              </center>
+              </Col>
+
+              <Col xs={12} md={6}>
+              <center>
+              <div id="hh_chart"></div>
+              <div id="hh_show"></div>
+              </center>
+              </Col>
+
+
+              <Col>
+              <center>              
+              </center>
+              </Col>
+
+              <Col xs={12} md={12}>
+              <center>
+              <Panel header=<h0>昨日溫濕度曲線圖</h0> bsStyle="info">
+              <div id="tt_his"></div>
+              <div id="hh_his"></div>
+              </Panel>
+              </center>
+              </Col>
+
+             </Panel>
+             </Pager>
+          </Row>
+        </Grid>
+        );
+      }
+    });
+    ReactDOM.render(<ButtonInput />, main);
+    </script>
+    <center>
+    <iframe src="http://192.168.0.105:8080/?action=stream" width="1280" height="720" scrolling="no"></iframe>
+    <iframe src="http://192.168.0.106:8080/?action=stream" width="1280" height="720" scrolling="no"></iframe>
+    </center>
+  </body>
+</html>
