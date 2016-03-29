@@ -273,13 +273,13 @@
         async: true,
           success: function(text) {
             wwhis = JSON.parse("[" + text + "]");
-            console.log(wwhis);
+            console.log(pphis);
             google.charts.setOnLoadCallback(drawBasic);
             function drawBasic() {
             var data = new google.visualization.DataTable();
             data.addColumn('number', 'Time');
             data.addColumn('number', 'W');
-            data.addRows(wwhis);
+            data.addRows(pphis);
             var options = {
               hAxis: {
                 title: 'Time'
