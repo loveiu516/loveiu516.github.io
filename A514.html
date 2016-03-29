@@ -272,7 +272,7 @@
         dataType: 'text',
         async: true,
           success: function(text) {
-            wwhis = JSON.parse("[" + text + "]");
+            pphis = JSON.parse("[" + text + "]");
             console.log(pphis);
             google.charts.setOnLoadCallback(drawBasic);
             function drawBasic() {
