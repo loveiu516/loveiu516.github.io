@@ -2,28 +2,23 @@
 <html>
   <head>
     <meta charset="utf-8" />
-
     <title>RM輸入+查詢+外嵌</title>
     <link rel="icon" href="http://i.imgur.com/ufPgFO7.jpg">
-    
     <!-- jquery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script> 
+    <script src="http://loveiu516.github.io/jquery.min.js"></script> 
     <!-- bootstrap -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://loveiu516.github.io/bootstrap.min.css" rel="stylesheet">
     <!-- react -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.min.js"></script>
+    <script src="http://loveiu516.github.io/react.min.js"></script>
+    <script src="http://loveiu516.github.io/react-dom.min.js"></script>
     <!-- babel -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+    <script src="http://loveiu516.github.io/browser.min.js"></script>
     <!-- react-bootstrap -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.28.3/react-bootstrap.min.js"></script>
+    <script src="http://loveiu516.github.io/react-bootstrap.min.js"></script>
   </head>
 
   <body>
-    
     <div id = "main"></div>
-
-
     <script type="text/babel">
     var Grid=ReactBootstrap.Grid;
     var Row=ReactBootstrap.Row;
@@ -51,9 +46,7 @@
     var text4="";
     var openload, videomega, openloadpart1, openloadpart2;
 
-
     var sendurl = "https://script.google.com/macros/s/AKfycbxQJg6qr2aGeQOmmhTSTp9Zfl-N4yBG3InTYsV3DoLCjd6f11M_/exec";
-
 
       var Reloadbtn = React.createClass({
         render() {
@@ -64,7 +57,6 @@
           );
         }
       });
-
 
       var QueryResult = React.createClass ({
         render() {
@@ -95,9 +87,7 @@
         }
       });
 
-
       var Input1 = React.createClass ({
-
           getresult() {
           if ((Number(this.refs.text0.getValue()) != 0)&&(isNaN(this.refs.text0.getValue()) != true)) {            
           text0 = Number(this.refs.text0.getValue());
@@ -248,9 +238,6 @@
     });
     ReactDOM.render(<ButtonInput />, main);
     ReactDOM.render(<Input1 />, input1);
-
-
-
     </script>
   </body>
 </html>
