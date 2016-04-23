@@ -81,12 +81,19 @@
 
     componentDidMount(){
       this.gethistory();
-      this.get();
-      this.setInterval(this.get, 10000);
+      this.getsensor();
+      this.revideo();
+
+      this.setInterval(this.getsensor, 10000);
+      this.setInterval(this.revideo, 15000);
+    },
+
+    revideo(){      
+      ReactDOM.render(<h1>RELOAD</h1>,document.getElementById('video1'));
+      ReactDOM.render(<iframe src="http://10.2.8.169:8080/?action=stream" width="800" height="600" scrolling="no"></iframe>,document.getElementById('video1'));
     },
     
-    get(){
-      
+    getsensor(){
         $.ajax({
         url: get_sensor,
         global: false,
@@ -99,15 +106,14 @@
             ww = json.ww;
             pp = json.pp;
             
-            console.log(tt);
-            console.log(hh);
-            console.log(ww);
-            console.log(pp);
+            // console.log(tt);
+            // console.log(hh);
+            // console.log(ww);
+            // console.log(pp);
             
             google.charts.setOnLoadCallback(drawChart);
 
-      function drawChart() {
-        
+      function drawChart() {        
         var datatt = google.visualization.arrayToDataTable(JSON.parse('[["Label","Value"],["溫度",' + tt + ']]'));
         var datahh = google.visualization.arrayToDataTable(JSON.parse('[["Label","Value"],["濕度",' + hh + ']]'));
         var dataww = google.visualization.arrayToDataTable(JSON.parse('[["Label","Value"],["水位",' + ww + ']]'));
@@ -341,10 +347,6 @@
               </center>
               </Col>
 
-              <Col>
-              <center>
-              </center>
-              </Col>
 
               <Col xs={12} md={12}>
               <center>
@@ -353,6 +355,16 @@
               <div id="hh_his"></div>
               <div id="ww_his"></div>
               <div id="pp_his"></div>
+              </Panel>
+              </center>
+              </Col>
+
+              <Col xs={12} md={12}>
+              <center>
+              <Panel header=<h0>攝影機</h0> bsStyle="info">
+              <center>
+              <div id="video1"></div>
+              </center>
               </Panel>
               </center>
               </Col>
@@ -366,11 +378,5 @@
     });
     ReactDOM.render(<ButtonInput />, main);
     </script>
-
-    <center>
-    <iframe src="http://10.2.8.169:8080/?action=stream" width="800" height="600" scrolling="no"></iframe>
-    </center>
-
-
   </body>
 </html>
