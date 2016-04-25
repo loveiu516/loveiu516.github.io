@@ -1,3 +1,27 @@
+var m = require('mraa');
+var wget = require('node-wget');
+
+//p19 p20
+var myLed1 = new m.Gpio(5);
+var myLed2 = new m.Gpio(4);
+
+var myLed3 = new m.Gpio(6);
+var myLed4 = new m.Gpio(6);
+var myLed5 = new m.Gpio(6);
+var myLed6 = new m.Gpio(6);
+var myLed7 = new m.Gpio(6);
+var myLed8 = new m.Gpio(6);
+
+var json = "";
+var light1 = "";
+var light2 = "";
+var light3 = "";
+var light4 = "";
+var light5 = "";
+var light6 = "";
+var light7 = "";
+var light8 = "";
+
 function main() {
     wget(
         {
