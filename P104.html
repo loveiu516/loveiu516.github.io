@@ -59,8 +59,6 @@
     var get_sensor = "https://script.google.com/macros/s/AKfycbzJp1yCIkpYhHneBkoxssK3mPy8x76tm8c7zAmzFLtvJr62Uxo/exec";
     var get_sensor_history = "https://script.google.com/macros/s/AKfycbzRh1-75x-DDX-_SNLuvYjm-_Hof43uStDD91qlCWYWJokJHW0c/exec";
 
-
-    
     var SetIntervalMixin = {
       componentWillMount(){
         this.intervals = [];
@@ -82,13 +80,19 @@
 
     componentDidMount(){
       this.gethistory();
-      this.get();
-      this.setInterval(this.get, 10000);
+      this.getsensor();
+      this.revideo();
+
+      this.setInterval(this.getsensor, 10000);
+      this.setInterval(this.revideo, 15000);
     },
 
+    revideo(){      
+      ReactDOM.render(<h1>RELOAD</h1>,document.getElementById('video1'));
+      ReactDOM.render(<iframe src="http://192.168.0.106:8080/?action=stream" width="800" height="600" scrolling="no"></iframe>,document.getElementById('video1'));
+    },
     
-    get(){
-      
+    getsensor(){
         $.ajax({
         url: get_sensor,
         global: false,
@@ -236,18 +240,22 @@
               <div id="hh_show"></div>
               </center>
               </Col>
-
-
-              <Col>
-              <center>              
-              </center>
-              </Col>
-
+              
               <Col xs={12} md={12}>
               <center>
               <Panel header=<h0>昨日溫濕度曲線圖</h0> bsStyle="info">
               <div id="tt_his"></div>
               <div id="hh_his"></div>
+              </Panel>
+              </center>
+              </Col>
+
+              <Col xs={12} md={12}>
+              <center>
+              <Panel header=<h0>攝影機</h0> bsStyle="info">
+              <center>
+              <div id="video1"></div>
+              </center>
               </Panel>
               </center>
               </Col>
@@ -261,9 +269,5 @@
     });
     ReactDOM.render(<ButtonInput />, main);
     </script>
-    <center>
-    <iframe src="http://192.168.0.105:8080/?action=stream" width="800" height="600" scrolling="no"></iframe>
-    <iframe src="http://192.168.0.106:8080/?action=stream" width="800" height="600" scrolling="no"></iframe>
-    </center>
   </body>
 </html>
