@@ -1,21 +1,23 @@
 var http = require('http');
 var https = require('https');
 var timerjson = "";
-var url2;
+var url2 = "";
+var gastimerurl = "https://script.google.com/macros/s/AKfycbxJP9hdckSwtXlC67csDOW-p-BdU1sRk7TZcLGmcYqjgT0F12XH/exec";
 
 function periodicActivity() {
-https.get('https://script.google.com/macros/s/AKfycbxJP9hdckSwtXlC67csDOW-p-BdU1sRk7TZcLGmcYqjgT0F12XH/exec', (res) => {
+https.get(gastimerurl, (res) => {
   // console.log('statusCode: ', res.statusCode);
+  res.setEncoding('utf8');
   url2 = res.headers.location;
-
+  periodicActivity2();
   res.on('data', (d) => {
-    // process.stdout.write(d);
+  // process.stdout.write(d);
   });
 }).on('error', (e) => {
   // console.error(e);
+  process.exit(1);
 });
-periodicActivity2();
-setTimeout(periodicActivity, 3000);    
+setTimeout(periodicActivity, 5000);
 }
 
 function periodicActivity2() {
@@ -28,14 +30,14 @@ https.get(url2, (res) => {
   });
 }).on('error', (e) => {
   //console.error(e);
+  process.exit(1);
 });
+  url2 = "";
 }
-
 periodicActivity();
-
 
 http.createServer(function(request, response) {
   response.writeHead(200);
   response.end(timerjson);
-}.bind(this)).listen(8081);
-console.log('Listening on port 8081 ...');
+}.bind(this)).listen(8082);
+console.log('Listening on port 8082 ...');

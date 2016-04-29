@@ -5,7 +5,7 @@ var nowpowerxml = '<?xml version="1.0" encoding="UTF8"?><SMARTPLUG id="edimax"><
 
 function periodicActivity() {
     request({
-    url: "http://admin:1234@10.2.8.163:10000/smartplug.cgi",
+    url: "http://admin:1234@192.168.0.103:10000/smartplug.cgi",
     method: "POST",
     headers: {
         "content-type": "text/xml"
@@ -21,7 +21,7 @@ function periodicActivity() {
             power = result.SMARTPLUG.CMD[0].NOW_POWER[0]["Device.System.Power.NowPower"][0];
             // console.log(power);
             request({
-                url: "http://10.2.8.2:8080/?sensor=POWER&P=" + power,
+                url: "http://10.2.6.120:8081/?sensor=POWER&P=" + power,
                 method: 'GET',
                 headers: {                    
                     'Content-Type': 'application/html'

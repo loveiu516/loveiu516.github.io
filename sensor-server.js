@@ -72,9 +72,10 @@ http.createServer(function(request, response) {
         }
     } catch(e) {
         // console.log(e);
+        process.exit(1);
     }
     response.writeHead(200);
     response.write("OK");
     response.end();
-}.bind(this)).listen(8080);
-console.log('Listening on port 8080 ...');
+}.bind(this)).listen(8081);
+console.log('Listening on port 8081 ...');
