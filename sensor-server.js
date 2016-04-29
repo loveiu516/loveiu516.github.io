@@ -2,10 +2,7 @@ var wget = require('node-wget');
 var http = require('http');
 var https = require('https');
 var url = require('url');
-
 var gasurl = "https://script.google.com/macros/s/AKfycbzGVIYncI7zEhyfSejVZUh3MizJOVmemjjj_JABmvaDiNzHRSQ/exec";
-
-
 http.createServer(function(request, response) {
     var params = url.parse(request.url, true).query;
 
@@ -72,7 +69,6 @@ http.createServer(function(request, response) {
         }
     } catch(e) {
         // console.log(e);
-        process.exit(1);
     }
     response.writeHead(200);
     response.write("OK");
