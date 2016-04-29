@@ -26,8 +26,8 @@ function main() {
     wget(
         {
         //url:  'https://script.google.com/macros/s/AKfycbxJP9hdckSwtXlC67csDOW-p-BdU1sRk7TZcLGmcYqjgT0F12XH/exec',
-        url:  'http://10.2.8.2:8081',
-        dest: '',
+        url:  'http://10.2.6.120:8082',
+        dest: '/tmp/timer',
         timeout: 10000
         },
 
