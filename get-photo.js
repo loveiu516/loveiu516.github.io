@@ -9,7 +9,7 @@ var nowyear = toDay.getFullYear();
 var photoname = nowyear.toString() +"-"+ nowmonth.toString() +"-"+ nowdate.toString() +"-"+ nowtime.toString() +".jpg";
 
 wget({
-        url:  'http://10.2.8.169:8080/?action=snapshot',
+        url:  'http://192.168.0.104:8080/?action=snapshot',
         dest: "./photo/"+photoname,
         timeout: 10000
     },
@@ -21,6 +21,6 @@ wget({
         }
         }
     );
-    setTimeout(periodicActivity, 40000);
+    setTimeout(periodicActivity, 30000);
 }
 periodicActivity();
