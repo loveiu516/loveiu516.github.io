@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -47,6 +48,7 @@
     var Pager=ReactBootstrap.Pager;
     var Panel=ReactBootstrap.Panel;
     var ListGroupItem=ReactBootstrap.ListGroupItem;
+    var ResponsiveEmbed=ReactBootstrap.ResponsiveEmbed;
     
     var tt="";
     var hh="";
@@ -91,7 +93,13 @@
 
     revideo(){      
       ReactDOM.render(<h1>RELOAD</h1>,document.getElementById('video1'));
-      ReactDOM.render(<iframe src="http://10.2.8.180:8080/?action=stream" width="800" height="600" scrolling="no"></iframe>,document.getElementById('video1'));
+      ReactDOM.render(<div><ResponsiveEmbed a4by3><img src="http://10.2.8.180:8080/?action=stream" class="img-responsive" /></ResponsiveEmbed></div>,document.getElementById('video1'));
+
+
+
+
+
+
     },
     
     getsensor(){
