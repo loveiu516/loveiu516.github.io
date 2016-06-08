@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,7 +6,7 @@
     <title>A514溫濕度</title>
     <link rel="icon" href="http://i.imgur.com/TUpTQag.png">
     <!-- jquery -->
-    <script src="http://loveiu516.github.io/jquery.min.js"></script> 
+    <script src="http://loveiu516.github.io/jquery.min.js"></script>
     <!-- bootstrap -->
     <link href="http://loveiu516.github.io/bootstrap.min.css" rel="stylesheet">
     <!-- react -->
@@ -25,6 +24,15 @@
     <script type="text/javascript">
     google.charts.load('current', {packages:['gauge','corechart','line']});
     </script>
+
+
+    <!-- zoom.js -->
+    <link rel="stylesheet" type="text/css" href="https://fat.github.io/zoom.js/css/zoom.css">
+    <script src="https://fat.github.io/zoom.js/js/zoom.js"></script>
+    <script src="https://raw.githubusercontent.com/twbs/bootstrap/master/js/transition.js"></script>
+    
+    
+
   </head>
 
     <body style="background-color:#00FFCC;">
@@ -93,9 +101,7 @@
 
     revideo(){      
       ReactDOM.render(<h1>RELOAD</h1>,document.getElementById('video1'));
-      ReactDOM.render(<div><ResponsiveEmbed a4by3><img src="http://10.2.8.20:8080/?action=stream" class="img-responsive" /></ResponsiveEmbed></div>,document.getElementById('video1'));
-
-
+      ReactDOM.render(<img src="http://10.2.8.22:8080/?action=stream" data-action="zoom"/>,document.getElementById('video1'));
 
 
 
