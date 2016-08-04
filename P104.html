@@ -4,18 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>P104溫濕度</title>
-    <link rel="icon" href="http://i.imgur.com/TUpTQag.png">
+    <link rel="icon" href="https://i.imgur.com/TUpTQag.png">
     <!-- jquery -->
-    <script src="http://loveiu516.github.io/jquery.min.js"></script> 
+    <script src="https://loveiu516.github.io/jquery.min.js"></script>
     <!-- bootstrap -->
-    <link href="http://loveiu516.github.io/bootstrap.min.css" rel="stylesheet">
+    <script src="https://loveiu516.github.io/bootstrap.min.js"></script>
+    <link href="https://loveiu516.github.io/bootstrap.min.css" rel="stylesheet">
     <!-- react -->
-    <script src="http://loveiu516.github.io/react.min.js"></script>
-    <script src="http://loveiu516.github.io/react-dom.min.js"></script>
+    <script src="https://loveiu516.github.io/react.min.js"></script>
+    <script src="https://loveiu516.github.io/react-dom.min.js"></script>
     <!-- babel -->
-    <script src="http://loveiu516.github.io/browser.min.js"></script>
+    <script src="https://loveiu516.github.io/browser.min.js"></script>
     <!-- react-bootstrap -->
-    <script src="http://loveiu516.github.io/react-bootstrap.min.js"></script>
+    <script src="https://loveiu516.github.io/react-bootstrap.min.js"></script>
     <!-- googel chart -->
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -24,6 +25,15 @@
     <script type="text/javascript">
     google.charts.load('current', {packages:['gauge','corechart','line']});
     </script>
+
+
+    <!-- zoom.js -->
+    <link rel="stylesheet" type="text/css" href="https://fat.github.io/zoom.js/css/zoom.css">
+    <script src="https://fat.github.io/zoom.js/js/zoom.js"></script>
+    <script src="https://raw.githubusercontent.com/twbs/bootstrap/master/js/transition.js"></script>
+    
+    
+
   </head>
 
     <body style="background-color:#00FFCC;">
@@ -47,19 +57,28 @@
     var Pager=ReactBootstrap.Pager;
     var Panel=ReactBootstrap.Panel;
     var ListGroupItem=ReactBootstrap.ListGroupItem;
+    var ResponsiveEmbed=ReactBootstrap.ResponsiveEmbed;
     
     var tt="";
     var hh="";
-    // var ww="";
-    // var pp="";
+
+    var tt2="";
+    var hh2="";
 
     var tthis="";
     var hhhis="";
-    // var wwhis="";
+
+    var tthis2="";
+    var hhhis2="";
 
     var get_sensor = "https://script.google.com/macros/s/AKfycbzJp1yCIkpYhHneBkoxssK3mPy8x76tm8c7zAmzFLtvJr62Uxo/exec";
-    var get_sensor_history = "https://script.google.com/macros/s/AKfycbzRh1-75x-DDX-_SNLuvYjm-_Hof43uStDD91qlCWYWJokJHW0c/exec";
 
+    var get_sensor2 = "https://script.google.com/macros/s/AKfycbz_RCGzrleR_moVKpPY5LWAh3mctObMbOCgV_AJPTOJbnsJAdM/exec";
+
+    var get_photo = "https://script.google.com/macros/s/AKfycbwfzF5L9RwNaf9Emh0GgDkDMQ5vesbP3BvRxo5_-6cAfDz6MhO6/exec";
+
+    var get_sensor_history = "https://script.google.com/macros/s/AKfycbzRh1-75x-DDX-_SNLuvYjm-_Hof43uStDD91qlCWYWJokJHW0c/exec";
+    
     var SetIntervalMixin = {
       componentWillMount(){
         this.intervals = [];
@@ -80,18 +99,30 @@
     },
 
     componentDidMount(){
-      this.gethistory();
       this.getsensor();
+      this.getsensor2();
       this.revideo();
-
+      this.gethistory();
       this.setInterval(this.getsensor, 10000);
+      this.setInterval(this.getsensor2, 10000);
       this.setInterval(this.revideo, 15000);
     },
 
-    revideo(){      
-      ReactDOM.render(<h1>RELOAD</h1>,document.getElementById('video1'));
-      ReactDOM.render(<iframe src="http://192.168.0.106:8080/?action=stream" width="800" height="600" scrolling="no"></iframe>,document.getElementById('video1'));
+    revideo(){
+        $.ajax({
+        url: get_photo,
+        global: false,
+        type: 'GET',
+        dataType: 'json',
+        async: true,
+          success: function(json) {
+              console.log(json.photo);
+              ReactDOM.render(<h1>RELOAD</h1>,document.getElementById('video1'));
+              ReactDOM.render(<img src={json.photo} data-action="zoom" class="img-rounded" alt="Cinque Terre" width="100%"/>,document.getElementById('video1'));
+        }
+      });
     },
+
     
     getsensor(){
         $.ajax({
@@ -104,8 +135,8 @@
             tt = json.tt;
             hh = json.hh;
             
-            //console.log(tt);
-            //console.log(hh);
+            console.log(tt);
+            console.log(hh);
             
             google.charts.setOnLoadCallback(drawChart);
 
@@ -152,6 +183,70 @@
         
         ReactDOM.render(<h1><Label bsStyle="danger">目前溫度: {tt} °C</Label></h1>,document.getElementById('tt_show'));
         ReactDOM.render(<h1><Label bsStyle="danger">目前濕度: {hh} %</Label></h1>,document.getElementById('hh_show'));
+
+        }
+      });
+    },
+
+    getsensor2(){
+        $.ajax({
+        url: get_sensor2,
+        global: false,
+        type: 'GET',
+        dataType: 'json',
+        async: true,
+          success: function(json) {
+            tt2 = json.tt;
+            hh2 = json.hh;
+
+            console.log(tt2);
+            console.log(hh2);
+            
+            google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        
+        var datatt2 = google.visualization.arrayToDataTable(JSON.parse('[["Label","Value"],["溫度",' + tt2 + ']]'));
+        var datahh2 = google.visualization.arrayToDataTable(JSON.parse('[["Label","Value"],["濕度",' + hh2 + ']]'));
+
+        var optionstt2 = {
+          width: 280,
+          height: 280,
+          redFrom: 30,
+          redTo: 50,
+          yellowFrom:10,          
+          yellowTo: 20,
+          greenFrom: 20,
+          greenTo:30,
+          minorTicks: 10,
+          min:10,
+          max:50
+        };
+
+        var optionshh2 = {
+          width: 280,
+          height: 280,
+          redFrom: 70,
+          redTo: 100,
+          yellowFrom:0,          
+          yellowTo: 50,
+          greenFrom: 50,
+          greenTo:70,
+          minorTicks: 10,
+          min:0,
+          max:100
+        };
+
+        var charttt = new google.visualization.Gauge(document.getElementById('tt_chart2'));
+        charttt.draw(datatt2, optionstt2);
+
+        var charthh = new google.visualization.Gauge(document.getElementById('hh_chart2'));
+        charthh.draw(datahh2, optionshh2);
+        }
+
+        
+        ReactDOM.render(<h1><Label bsStyle="danger">目前溫度: {tt} °C</Label></h1>,document.getElementById('tt_show2'));
+        ReactDOM.render(<h1><Label bsStyle="danger">目前濕度: {hh} %</Label></h1>,document.getElementById('hh_show2'));
 
         }
       });
@@ -225,7 +320,7 @@
         <Row className="well">
              <Pager>
              <Panel header=<h0>P104感測器</h0> bsStyle="info">
-
+             <Panel header=<h0>裡面</h0> bsStyle="info">
               <Col xs={12} md={6}>
               <center>
               <div id="tt_chart"></div>
@@ -239,7 +334,25 @@
               <div id="hh_show"></div>
               </center>
               </Col>
+
+              </Panel>
+              <Panel header=<h0>外面</h0> bsStyle="info">
+
+              <Col xs={12} md={6}>
+              <center>
+              <div id="tt_chart2"></div>
+              <div id="tt_show2"></div>
+              </center>
+              </Col>
+
+              <Col xs={12} md={6}>
+              <center>
+              <div id="hh_chart2"></div>
+              <div id="hh_show2"></div>
+              </center>
+              </Col>
               
+              </Panel>
               <Col xs={12} md={12}>
               <center>
               <Panel header=<h0>昨日溫濕度曲線圖</h0> bsStyle="info">
