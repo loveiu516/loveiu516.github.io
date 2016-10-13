@@ -18,24 +18,17 @@
     <!-- react-bootstrap -->
     <script src="https://loveiu516.github.io/react-bootstrap.min.js"></script>
     <!-- googel chart -->
-
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-
     <script type="text/javascript">
     google.charts.load('current', {packages:['gauge','corechart','line']});
     </script>
-
-
     <!-- zoom.js -->
     <link rel="stylesheet" type="text/css" href="https://fat.github.io/zoom.js/css/zoom.css">
     <script src="https://fat.github.io/zoom.js/js/zoom.js"></script>
     <script src="https://raw.githubusercontent.com/twbs/bootstrap/master/js/transition.js"></script>
-    
-    
-
   </head>
-
+  
     <body style="background-color:#00FFCC;">
     <div id = "main"></div>
     
@@ -71,13 +64,13 @@
     var tthis2="";
     var hhhis2="";
 
-    var get_sensor = "https://script.google.com/macros/s/AKfycbzJp1yCIkpYhHneBkoxssK3mPy8x76tm8c7zAmzFLtvJr62Uxo/exec";
+    var get_sensor1 = "https://script.google.com/macros/s/AKfycbzJp1yCIkpYhHneBkoxssK3mPy8x76tm8c7zAmzFLtvJr62Uxo/exec";
+    var get_sensor_history1 = "https://script.google.com/macros/s/AKfycbzRh1-75x-DDX-_SNLuvYjm-_Hof43uStDD91qlCWYWJokJHW0c/exec";
 
     var get_sensor2 = "https://script.google.com/macros/s/AKfycbz_RCGzrleR_moVKpPY5LWAh3mctObMbOCgV_AJPTOJbnsJAdM/exec";
+    var get_sensor_history2 = "https://script.google.com/macros/s/AKfycbw0IMjBhShCFQQLHw1PEVwCfyTvXj3Nxx0DkuczcQZU-OPFKX70/exec";
 
     var get_photo = "https://script.google.com/macros/s/AKfycbwfzF5L9RwNaf9Emh0GgDkDMQ5vesbP3BvRxo5_-6cAfDz6MhO6/exec";
-
-    var get_sensor_history = "https://script.google.com/macros/s/AKfycbzRh1-75x-DDX-_SNLuvYjm-_Hof43uStDD91qlCWYWJokJHW0c/exec";
     
     var SetIntervalMixin = {
       componentWillMount(){
@@ -103,6 +96,7 @@
       this.getsensor2();
       this.revideo();
       this.gethistory();
+      this.gethistory2();
       this.setInterval(this.getsensor, 10000);
       this.setInterval(this.getsensor2, 10000);
       this.setInterval(this.revideo, 15000);
@@ -122,11 +116,10 @@
         }
       });
     },
-
     
     getsensor(){
         $.ajax({
-        url: get_sensor,
+        url: get_sensor1,
         global: false,
         type: 'GET',
         dataType: 'json',
@@ -179,7 +172,6 @@
         var charthh = new google.visualization.Gauge(document.getElementById('hh_chart'));
         charthh.draw(datahh, optionshh);
         }
-
         
         ReactDOM.render(<h1><Label bsStyle="danger">目前溫度: {tt} °C</Label></h1>,document.getElementById('tt_show'));
         ReactDOM.render(<h1><Label bsStyle="danger">目前濕度: {hh} %</Label></h1>,document.getElementById('hh_show'));
@@ -187,7 +179,7 @@
         }
       });
     },
-
+    
     getsensor2(){
         $.ajax({
         url: get_sensor2,
@@ -243,7 +235,6 @@
         var charthh = new google.visualization.Gauge(document.getElementById('hh_chart2'));
         charthh.draw(datahh2, optionshh2);
         }
-
         
         ReactDOM.render(<h1><Label bsStyle="danger">目前溫度: {tt2} °C</Label></h1>,document.getElementById('tt_show2'));
         ReactDOM.render(<h1><Label bsStyle="danger">目前濕度: {hh2} %</Label></h1>,document.getElementById('hh_show2'));
@@ -254,7 +245,7 @@
     
     gethistory(){
         $.ajax({
-        url: get_sensor_history + "?tt=1",
+        url: get_sensor_history1 + "?tt=1",
         global: false,
         type: 'GET',
         dataType: 'text',
@@ -281,9 +272,9 @@
             }
           }
         });
-
+        
         $.ajax({
-        url: get_sensor_history + "?hh=1",
+        url: get_sensor_history1 + "?hh=1",
         global: false,
         type: 'GET',
         dataType: 'text',
@@ -310,34 +301,99 @@
             }
           }
         });
-
-
     },
-
+    
+        gethistory2(){
+        $.ajax({
+        url: get_sensor_history2 + "?tt=1",
+        global: false,
+        type: 'GET',
+        dataType: 'text',
+        async: true,
+          success: function(text) {
+            tthis = JSON.parse("[" + text + "]");
+            console.log(tthis);
+            google.charts.setOnLoadCallback(drawBasic);
+            function drawBasic() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', 'Time');
+            data.addColumn('number', '°C');
+            data.addRows(tthis);
+            var options = {
+              hAxis: {
+                title: 'Time'
+              },
+              vAxis: {
+                title: '°C'
+              }
+            };
+            var chart = new google.visualization.LineChart(document.getElementById('tt_his2'));
+            chart.draw(data, options);
+            }
+          }
+        });
+        
+        $.ajax({
+        url: get_sensor_history2 + "?hh=1",
+        global: false,
+        type: 'GET',
+        dataType: 'text',
+        async: true,
+          success: function(text) {
+            hhhis = JSON.parse("[" + text + "]");
+            console.log(hhhis);
+            google.charts.setOnLoadCallback(drawBasic);
+            function drawBasic() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', 'Time');
+            data.addColumn('number', '%');
+            data.addRows(hhhis);
+            var options = {
+              hAxis: {
+                title: 'Time'
+              },
+              vAxis: {
+                title: '%'
+              }
+            };
+            var chart = new google.visualization.LineChart(document.getElementById('hh_his2'));
+            chart.draw(data, options);
+            }
+          }
+        });
+    },
+    
       render() {
         return (
         <Grid>
         <Row className="well">
-             <Pager>
-             <Panel header=<h0>P104感測器</h0> bsStyle="info">
-             <Panel header=<h0>裡面</h0> bsStyle="info">
+        <Pager>
+          <Panel header=<h0>P104感測器</h0> bsStyle="info">
+            <Panel header=<h0>裡面</h0> bsStyle="info">
               <Col xs={12} md={6}>
               <center>
               <div id="tt_chart"></div>
               <div id="tt_show"></div>
               </center>
               </Col>
-
+              
               <Col xs={12} md={6}>
               <center>
               <div id="hh_chart"></div>
               <div id="hh_show"></div>
               </center>
               </Col>
-
+              
+              <Col xs={12} md={12}>
+              <center>
+              <Panel header=<h0>昨日溫濕度曲線圖</h0> bsStyle="info">
+              <div id="tt_his"></div>
+              <div id="hh_his"></div>
               </Panel>
-              <Panel header=<h0>外面</h0> bsStyle="info">
-
+              </center>
+              </Col>
+            </Panel>
+            <Panel header=<h0>外面</h0> bsStyle="info">
               <Col xs={12} md={6}>
               <center>
               <div id="tt_chart2"></div>
@@ -351,30 +407,26 @@
               <div id="hh_show2"></div>
               </center>
               </Col>
-              
-              </Panel>
+
               <Col xs={12} md={12}>
               <center>
               <Panel header=<h0>昨日溫濕度曲線圖</h0> bsStyle="info">
-              <div id="tt_his"></div>
-              <div id="hh_his"></div>
+              <div id="tt_his2"></div>
+              <div id="hh_his2"></div>
               </Panel>
               </center>
               </Col>
-
-              <Col xs={12} md={12}>
-              <center>
-              <Panel header=<h0>攝影機</h0> bsStyle="info">
-              <center>
-              <div id="video1"></div>
-              </center>
-              </Panel>
-              </center>
-              </Col>
-
-             </Panel>
-             </Pager>
-          </Row>
+            </Panel>
+          </Panel>
+            <Col xs={12} md={12}>
+            <Panel header=<h0>攝影機</h0> bsStyle="info">
+            <center>
+            <div id="video1"></div>
+            </center>
+            </Panel>
+            </Col>
+        </Pager>
+        </Row>
         </Grid>
         );
       }
