@@ -3,11 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>A514溫濕度</title>
+    <title>P104溫濕度</title>
     <link rel="icon" href="https://i.imgur.com/TUpTQag.png">
     <!-- jquery -->
     <script src="https://loveiu516.github.io/jquery.min.js"></script>
     <!-- bootstrap -->
+    <script src="https://loveiu516.github.io/bootstrap.min.js"></script>
     <link href="https://loveiu516.github.io/bootstrap.min.css" rel="stylesheet">
     <!-- react -->
     <script src="https://loveiu516.github.io/react.min.js"></script>
@@ -17,24 +18,17 @@
     <!-- react-bootstrap -->
     <script src="https://loveiu516.github.io/react-bootstrap.min.js"></script>
     <!-- googel chart -->
-
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-
     <script type="text/javascript">
     google.charts.load('current', {packages:['gauge','corechart','line']});
     </script>
-
-
     <!-- zoom.js -->
     <link rel="stylesheet" type="text/css" href="https://fat.github.io/zoom.js/css/zoom.css">
     <script src="https://fat.github.io/zoom.js/js/zoom.js"></script>
     <script src="https://raw.githubusercontent.com/twbs/bootstrap/master/js/transition.js"></script>
-    
-    
-
   </head>
-
+  
     <body style="background-color:#00FFCC;">
     <div id = "main"></div>
     
@@ -70,6 +64,8 @@
 
     var get_sensor = "https://script.google.com/macros/s/AKfycbw-rRnX-mOW9psqn8g0rD74FgoSExeeBYqCZp9kx9tTskYBJ4k/exec";
     var get_sensor_history = "https://script.google.com/macros/s/AKfycbze-Tft6-HECmhHZxuVe6TyEW1Noo2jPCP_5Y-9fBXdk9xgeuh5/exec";
+    var get_photo = "https://script.google.com/macros/s/AKfycbxffxQwuJuYBU8dEuQwmWxuz2NxTnKzSGrvBxG1r3dXBXa7z-wN/exec";
+
     
     var SetIntervalMixin = {
       componentWillMount(){
@@ -99,13 +95,19 @@
       this.setInterval(this.revideo, 15000);
     },
 
-    revideo(){      
-      ReactDOM.render(<h1>RELOAD</h1>,document.getElementById('video1'));
-      ReactDOM.render(<img src="http://10.1.135.94:8080/?action=snapshot" data-action="zoom"/>,document.getElementById('video1'));
-
-
-
-
+    revideo(){
+      $.ajax({
+        url: get_photo,
+        global: false,
+        type: 'GET',
+        dataType: 'json',
+        async: true,
+          success: function(json) {
+              console.log(json.photo);
+              ReactDOM.render(<h1>RELOAD</h1>,document.getElementById('video1'));
+              ReactDOM.render(<img src={json.photo} data-action="zoom" class="img-rounded" alt="Cinque Terre" width="100%"/>,document.getElementById('video1'));
+        }
+      });
     },
     
     getsensor(){
@@ -131,7 +133,6 @@
       function drawChart() {        
         var datatt = google.visualization.arrayToDataTable(JSON.parse('[["Label","Value"],["溫度",' + tt + ']]'));
         var datahh = google.visualization.arrayToDataTable(JSON.parse('[["Label","Value"],["濕度",' + hh + ']]'));
-        var dataww = google.visualization.arrayToDataTable(JSON.parse('[["Label","Value"],["水位",' + ww + ']]'));
         var datapp = google.visualization.arrayToDataTable(JSON.parse('[["Label","Value"],["瓦數",' + pp + ']]'));
 
         var optionstt = {
@@ -162,20 +163,6 @@
           max:100
         };
 
-        var optionsww = {
-          width: 280,
-          height: 280,
-          redFrom: 600,
-          redTo: 500,
-          yellowFrom:900,          
-          yellowTo: 800,
-          greenFrom: 800,
-          greenTo:600,
-          minorTicks: 10,
-          min:900,
-          max:500
-        };
-
         var optionspp = {
           width: 280,
           height: 280,
@@ -192,16 +179,12 @@
         var charthh = new google.visualization.Gauge(document.getElementById('hh_chart'));
         charthh.draw(datahh, optionshh);
 
-        var chartww = new google.visualization.Gauge(document.getElementById('ww_chart'));
-        chartww.draw(dataww, optionsww);
-
         var chartpp = new google.visualization.Gauge(document.getElementById('pp_chart'));
         chartpp.draw(datapp, optionspp);
         }
         
         ReactDOM.render(<h1><Label bsStyle="danger">目前溫度: {tt} °C</Label></h1>,document.getElementById('tt_show'));
         ReactDOM.render(<h1><Label bsStyle="danger">目前濕度: {hh} %</Label></h1>,document.getElementById('hh_show'));
-        ReactDOM.render(<h1><Label bsStyle="danger">目前水位: {ww} Val</Label></h1>,document.getElementById('ww_show'));
         ReactDOM.render(<h1><Label bsStyle="danger">目前瓦數: {pp} W</Label></h1>,document.getElementById('pp_show'));
         }
       });
@@ -267,36 +250,6 @@
         });
 
         $.ajax({
-        url: get_sensor_history + "?ww=1",
-        global: false,
-        type: 'GET',
-        dataType: 'text',
-        async: true,
-          success: function(text) {
-            wwhis = JSON.parse("[" + text + "]");
-            console.log(wwhis);
-            google.charts.setOnLoadCallback(drawBasic);
-            function drawBasic() {
-            var data = new google.visualization.DataTable();
-            data.addColumn('number', 'Time');
-            data.addColumn('number', 'val');
-            data.addRows(wwhis);
-            var options = {
-              hAxis: {
-                title: 'Time'
-              },
-              vAxis: {
-                title: 'val'
-              }
-            };
-            var chart = new google.visualization.LineChart(document.getElementById('ww_his'));
-            chart.draw(data, options);
-            }
-          }
-        });
-
-
-        $.ajax({
         url: get_sensor_history + "?pp=1",
         global: false,
         type: 'GET',
@@ -350,19 +303,11 @@
 
               <Col xs={12} md={4}>
               <center>
-              <div id="ww_chart"></div>
-              <div id="ww_show"></div>
-              </center>
-              </Col>
-
-              <Col xs={12} md={12}>
-              <center>
               <div id="pp_chart"></div>
               <div id="pp_show"></div>
               </center>
               </Col>
-
-
+              
               <Col xs={12} md={12}>
               <center>
               <Panel header=<h0>昨日溫濕度曲線圖</h0> bsStyle="info">
