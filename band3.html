@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>band*3</title>
+    <link rel="shortcut icon" href="http://s.cmstatic.net/webclient/res/20161110213202/images/favicon.ico">
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- react -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.0/react.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.0/react-dom.min.js"></script>
+    <!-- react-bootstrap -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.30.7/react-bootstrap.min.js"></script>
+    <!-- babel -->
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  </head>
+
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+
+const lStyle = {
+  position: 'fixed',
+  border: '0px',
+  top: '0px',
+  left: '0px',
+  width: '33%',
+  height: '100%'
+  };
+
+const mStyle = {
+  position: 'fixed',
+  border: '0px',
+  top: '0px',
+  left: '33%',
+  width: '33%',
+  height: '100%'
+  };
+      
+const rStyle = {
+  position: 'fixed',
+  border: '0px',
+  top: '0px',
+  left: '66%',
+  width: '34%',
+  height: '100%'
+  };
+  
+var getPara = location.search.slice(1,-1).split("+");
+console.log(getPara);
+
+ReactDOM.render(
+  <div><iframe style={lStyle} src={getPara[0]}></iframe><iframe style={mStyle} src={getPara[1]}></iframe><iframe style={rStyle} src={getPara[2]}></iframe></div>,
+  document.getElementById('root')
+);
+
+</script>
+</body>
+</html>
