@@ -24,49 +24,23 @@
 <div id="root"></div>
 
 <script type="text/babel">
-var Grid=ReactBootstrap.Grid;
-var Row=ReactBootstrap.Row;
-var Col=ReactBootstrap.Col;
-var ButtonsInstance=ReactBootstrap.ButtonsInstance;
-var ButtonToolbar=ReactBootstrap.ButtonToolbar;
-var ButtonInput=ReactBootstrap.ButtonInput;
-var Button=ReactBootstrap.Button;
-var Label=ReactBootstrap.Label;
-var Input=ReactBootstrap.Input;
-var Tabs=ReactBootstrap.Tabs;
-var Tab=ReactBootstrap.Tab;
-var Image=ReactBootstrap.Image;
-var Glyphicon=ReactBootstrap.Glyphicon;
-var Jumbotron=ReactBootstrap.Jumbotron;
-var Pager=ReactBootstrap.Pager;
-var Panel=ReactBootstrap.Panel;
-var ListGroupItem=ReactBootstrap.ListGroupItem;
-var ResponsiveEmbed=ReactBootstrap.ResponsiveEmbed;
-var Form = ReactBootstrap.Form;
-var FormGroup = ReactBootstrap.FormGroup;
-var ControlLabel = ReactBootstrap.ControlLabel;
-var FormControl = ReactBootstrap.FormControl;
-var DropdownButton = ReactBootstrap.DropdownButton;
-var MenuItem = ReactBootstrap.MenuItem;
-var ButtonGroup = ReactBootstrap.ButtonGroup;
+const lStyle = {
+position: 'fixed',
+border: '0px',
+top: '0px',
+left: '0%',
+width: '50%',
+height: '100%'
+};
 
 const rStyle = {
-  position: 'fixed',
-  border: '0px',
-  top: '0px',
-  right: '0px',
-  width: '50%',
-  height: '100%'
-  };
-      
-const lStyle = {
-  position: 'fixed',
-  border: '0px',
-  top: '0px',
-  left: '0px',
-  width: '50%',
-  height: '100%'
-  };
+position: 'fixed',
+border: '0px',
+top: '0px',
+left: '50%',
+width: '50%',
+height: '100%'
+};
   
 var getPara = location.search.slice(1,-1).split("+");
 console.log(getPara);
