@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>card</title>
+  <link rel="shortcut icon" href="http://s.cmstatic.net/webclient/res/20161110213202/images/favicon.ico">
+  <!-- jquery -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <!-- bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css">
+  <!-- react -->
+  <script src="https://unpkg.com/react@15/dist/react.js"></script>
+  <script src="https://unpkg.com/react-dom@15/dist/react-dom.js"></script>
+  <!-- react-bootstrap -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.30.7/react-bootstrap.min.js"></script>
+  <!-- babel -->
+  <script src="https://unpkg.com/babel-standalone@6/babel.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/1.7.1/remarkable.min.js"></script>
+</head>
+
+<body>
+<div id="mountNode"></div>
+<div id="mountNode2"></div>
+
+<script>
+
+</script>
+
+<script type="text/babel">
+var Button = ReactBootstrap.Button;
+var ButtonToolbar = ReactBootstrap.ButtonToolbar;
+var FormControl = ReactBootstrap.FormControl;
+var Jumbotron = ReactBootstrap.Jumbotron;
+var Panel = ReactBootstrap.Panel;
+var FieldGroup = ReactBootstrap.FieldGroup;
+var Checkbox = ReactBootstrap.Checkbox;
+var Radio = ReactBootstrap.Radio;
+var FormGroup = ReactBootstrap.FormGroup;
+var ControlLabel = ReactBootstrap.ControlLabel;
+
+
+var Grid = ReactBootstrap.Grid;
+var Row = ReactBootstrap.Row;
+var Col = ReactBootstrap.Col;
+
+
+
+class MarkdownEditor extends React.Component {
+  
+  handleChange() {
+    
+    
+  }
+  
+  render() {
+
+    
+
+    return (
+       <ButtonToolbar>
+    {/* Standard button */}
+    <Button>Default</Button>
+
+    {/* Provides extra visual weight and identifies the primary action in a set of buttons */}
+    <Button bsStyle="primary">Primary</Button>
+
+    {/* Indicates a successful or positive action */}
+    <Button bsStyle="success">Success</Button>
+
+    {/* Contextual button for informational alert messages */}
+    <Button bsStyle="info">Info</Button>
+
+    {/* Indicates caution should be taken with this action */}
+    <Button bsStyle="warning">Warning</Button>
+
+    {/* Indicates a dangerous or potentially negative action */}
+    <Button bsStyle="danger">Danger</Button>
+
+    {/* Deemphasize a button by making it look like a link while maintaining button behavior */}
+    <Button bsStyle="link">Link</Button>
+  </ButtonToolbar>
+);
+
+
+  }
+}
+
+ReactDOM.render(<MarkdownEditor />, mountNode);
+
+
+
+</script>
+</body>
+
+</html>
