@@ -2,39 +2,38 @@
 <html lang="zh-TW">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>A514</title>
-  <link rel="icon" href="https://i.imgur.com/TUpTQag.png">
-  <!-- jquery -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <!-- bootstrap -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css">
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <!-- react -->
-  <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
-  <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
-  <!-- babel -->
-  <script src="https://loveiu516.github.io/browser.min.js"></script>
-  <!-- react-bootstrap -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.30.7/react-bootstrap.min.js"></script>
-  <!-- googel chart -->
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-  <script type="text/javascript">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>A514</title>
+    <link rel="icon" href="https://i.imgur.com/TUpTQag.png">
+    <!-- jquery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css">
+    <!-- react -->
+    <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+    <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+    <!-- babel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser-polyfill.min.js"></script>
+    <!-- react-bootstrap -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.30.7/react-bootstrap.min.js"></script>
+    <!-- googel chart -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
     google.charts.load('current', {packages:['gauge','corechart','line']});
     </script>
-  <!-- zoom.js -->
-  <link rel="stylesheet" type="text/css" href="https://fat.github.io/zoom.js/css/zoom.css">
-  <script src="https://fat.github.io/zoom.js/js/zoom.js"></script>
-  <script src="https://raw.githubusercontent.com/twbs/bootstrap/master/js/transition.js"></script>
+    <!-- zoom.js -->
+    <link rel="stylesheet" type="text/css" href="https://fat.github.io/zoom.js/css/zoom.css">
+    <script src="https://fat.github.io/zoom.js/js/zoom.js"></script>
+    <script src="https://raw.githubusercontent.com/twbs/bootstrap/master/js/transition.js"></script>
 </head>
 
 <body style="background-color:#00FFCC;">
-  <div id="main"></div>
-
-  <script type="text/babel">
+    <div id="main"></div>
+    <script type="text/babel">
     var Grid=ReactBootstrap.Grid;
     var Row=ReactBootstrap.Row;
     var Col=ReactBootstrap.Col;
@@ -58,16 +57,15 @@
     var hh="";
     var ww="";
     var pp="";
-
+    
     var tthis="";
     var hhhis="";
     var wwhis="";
     var pphis="";
-
+    
     var get_sensor = "https://script.google.com/macros/s/AKfycbw-rRnX-mOW9psqn8g0rD74FgoSExeeBYqCZp9kx9tTskYBJ4k/exec";
     var get_sensor_history = "https://script.google.com/macros/s/AKfycbze-Tft6-HECmhHZxuVe6TyEW1Noo2jPCP_5Y-9fBXdk9xgeuh5/exec";
     var get_photo = "https://script.google.com/macros/s/AKfycbxffxQwuJuYBU8dEuQwmWxuz2NxTnKzSGrvBxG1r3dXBXa7z-wN/exec";
-
     
     var SetIntervalMixin = {
       componentWillMount(){
@@ -82,7 +80,6 @@
     };
     
     var ButtonInput = React.createClass({
-      
     mixins: [SetIntervalMixin],
     getInitialState(){
       return {seconds: 0};
