@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 
@@ -24,75 +25,42 @@
 
 <body>
 <div id="mountNode"></div>
-<div id="mountNode2"></div>
 
-<script>
-
-</script>
 
 <script type="text/babel">
-var Button = ReactBootstrap.Button;
-var ButtonToolbar = ReactBootstrap.ButtonToolbar;
-var FormControl = ReactBootstrap.FormControl;
-var Jumbotron = ReactBootstrap.Jumbotron;
-var Panel = ReactBootstrap.Panel;
-var FieldGroup = ReactBootstrap.FieldGroup;
-var Checkbox = ReactBootstrap.Checkbox;
-var Radio = ReactBootstrap.Radio;
+var Alert = ReactBootstrap.Alert;
 var FormGroup = ReactBootstrap.FormGroup;
 var ControlLabel = ReactBootstrap.ControlLabel;
+var FormControl = ReactBootstrap.FormControl;
 
-
-var Grid = ReactBootstrap.Grid;
-var Row = ReactBootstrap.Row;
-var Col = ReactBootstrap.Col;
-
-
-
-class MarkdownEditor extends React.Component {
+class CustomTextInput extends React.Component {
   
-  handleChange() {
-    
-    
+  focus() {
   }
-  
+
   render() {
-
     
-
+var indents = [];
+    var i = 0;
+          for(i=0;i<100;i++){
+            indents.push(<option value={"select"+i} key={i}>select (multiple)</option>);
+          }
     return (
-       <ButtonToolbar>
-    {/* Standard button */}
-    <Button>Default</Button>
-
-    {/* Provides extra visual weight and identifies the primary action in a set of buttons */}
-    <Button bsStyle="primary">Primary</Button>
-
-    {/* Indicates a successful or positive action */}
-    <Button bsStyle="success">Success</Button>
-
-    {/* Contextual button for informational alert messages */}
-    <Button bsStyle="info">Info</Button>
-
-    {/* Indicates caution should be taken with this action */}
-    <Button bsStyle="warning">Warning</Button>
-
-    {/* Indicates a dangerous or potentially negative action */}
-    <Button bsStyle="danger">Danger</Button>
-
-    {/* Deemphasize a button by making it look like a link while maintaining button behavior */}
-    <Button bsStyle="link">Link</Button>
-  </ButtonToolbar>
-);
-
-
+      <div>
+        <form>
+        <FormGroup controlId="formControlsSelectMultiple">
+      <ControlLabel>Multiple select</ControlLabel>
+      <FormControl componentClass="select" multiple>
+        {indents}
+      </FormControl>
+    </FormGroup>
+        </form>
+      </div>
+    );
   }
 }
 
-ReactDOM.render(<MarkdownEditor />, mountNode);
-
-
-
+ReactDOM.render(<CustomTextInput />, mountNode);
 </script>
 </body>
 
