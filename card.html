@@ -309,11 +309,11 @@ var SetIntervalMixin = {
 
       },
 
-      handleChange1(e) {
+      inputhandleChange1(e) {
           this.setState({ id: e.target.value });
           },
 
-      handleChange2(e) {
+      inputhandleChange2(e) {
           this.setState({ pw: e.target.value });
           },
       
@@ -331,7 +331,7 @@ var SetIntervalMixin = {
                     Email
                 </Col>
                 <Col sm={10}>
-                    <FormControl onChange={this.handleChange1} type="email" placeholder="Email" />
+                    <FormControl onChange={this.inputhandleChange1} type="email" placeholder="Email" />
                 </Col>
                 </FormGroup>
 
@@ -340,7 +340,7 @@ var SetIntervalMixin = {
                     Password
                 </Col>
                 <Col sm={10}>
-                    <FormControl onChange={this.handleChange2} type="password" placeholder="Password" />
+                    <FormControl onChange={this.inputhandleChange2} type="password" placeholder="Password" />
                 </Col>
                 </FormGroup>
 
