@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>card</title>
-    <link rel="icon" href="https://i.imgur.com/E1NiJmy.jpg">
+    <link rel="icon" href="https://i.imgur.com/TUpTQag.png">
     <!-- jquery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <!-- bootstrap -->
@@ -17,11 +18,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>
     <!-- react-bootstrap -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.30.7/react-bootstrap.min.js"></script>
-</head>
     
+</head>
+
 <body style="background-color:#00FFCC;">
-<div id="main"></div>
-<script type="text/babel">
+    <div id="main"></div>
+    <script type="text/babel">
     var Grid=ReactBootstrap.Grid;
     var Row=ReactBootstrap.Row;
     var Col=ReactBootstrap.Col;
@@ -40,7 +42,8 @@
     var FormGroup=ReactBootstrap.FormGroup;
     var ControlLabel=ReactBootstrap.ControlLabel;
     var FormControl=ReactBootstrap.FormControl;
-    var indents=ReactBootstrap.indents;
+    var panel=ReactBootstrap.panel;
+
 
     var dropdown1Val = "全專輯";
     var dropdown2Val = "全成員";
@@ -84,7 +87,7 @@ var SetIntervalMixin = {
     var Main = React.createClass({
     mixins: [SetIntervalMixin],
     getInitialState(){
-      return {seconds: 0};
+      return {seconds: 0,id: '',pw: '',gas: ''};
     },
 
     componentDidMount(){
@@ -292,7 +295,7 @@ var SetIntervalMixin = {
 
           console.log(Release_List.toString());
           console.log(Wish_List.toString());
-          
+          var this1 = this;         
 
           $.ajax({
             url: send_url + "User_ID=" + this.state.id + "&User_PW=" + this.state.pw + "&Release_List=" + Release_List.toString() + "&Wish_List=" + Wish_List.toString(),
@@ -302,10 +305,17 @@ var SetIntervalMixin = {
             async: true,
             success: function(text) {
                 console.log(text);
+                this1.setState({ gas: text });
+                
             }
             });
+            this.clear();    
+        },
 
-      },
+      clear() {
+        this.setState({id: ''});
+        this.setState({pw: ''});
+        },
 
       inputhandleChange1(e) {
           this.setState({ id: e.target.value });
@@ -329,7 +339,7 @@ var SetIntervalMixin = {
                     Email
                 </Col>
                 <Col sm={10}>
-                    <FormControl onChange={this.inputhandleChange1} type="email" placeholder="Email" />
+                    <FormControl value={this.state.id} onChange={this.inputhandleChange1} type="email" placeholder="Email" />
                 </Col>
                 </FormGroup>
 
@@ -338,7 +348,7 @@ var SetIntervalMixin = {
                     Password
                 </Col>
                 <Col sm={10}>
-                    <FormControl onChange={this.inputhandleChange2} type="password" placeholder="Password" />
+                    <FormControl value={this.state.pw} onChange={this.inputhandleChange2} type="password" placeholder="Password" />
                 </Col>
                 </FormGroup>
 
@@ -430,10 +440,12 @@ var SetIntervalMixin = {
                     <FormGroup>
                     <Col sm={12}>
                     <Button bsStyle="primary" bsSize="large" onClick={this.send} block>送出</Button>
+                    <FormControl value={this.state.gas} type="text" />
                     </Col>
                     </FormGroup>
-                    </Row> 
-
+                    </Row>
+                    
+                    
                 
              </Panel>
              </Pager>
