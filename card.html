@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>換卡平台</title>
-    <link rel="icon" href="https://i.imgur.com/TUpTQag.png">
+    <link rel="icon" href="https://i.imgur.com/E1NiJmy.jpg">
     <!-- jquery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <!-- bootstrap -->
@@ -18,7 +18,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>
     <!-- react-bootstrap -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.30.7/react-bootstrap.min.js"></script>
-    
 </head>
 
 <body style="background-color:#00FFCC;">
@@ -43,34 +42,31 @@
     var ControlLabel=ReactBootstrap.ControlLabel;
     var FormControl=ReactBootstrap.FormControl;
     var panel=ReactBootstrap.panel;
-
-
+    
     var dropdown1Val = "全專輯";
     var dropdown2Val = "全成員";
     var dropdown3Val = "換出卡片";
     var dropdown4Val = "換入卡片";
-
+    
     var dropdown1Menu = [];
     var dropdown2Menu = [];
     var dropdown3Menu = [];
     var dropdown4Menu = [];
-
-
+    
     var Release_List = [];
     var Wish_List = [];
 
     var Release_List_Table = [];
     var Wish_List_Table = [];
-
+    
     var CardData_json = {};
     
     var AlbumData_json_url = "https://spreadsheets.google.com/feeds/list/1N-3BVlH3kYPkZ_gWyaInaBa1y4OQJ59PRHs0N0w51Dk/5/public/values?alt=json";
     var MemberData_json_url = "https://spreadsheets.google.com/feeds/list/1N-3BVlH3kYPkZ_gWyaInaBa1y4OQJ59PRHs0N0w51Dk/4/public/values?alt=json";
     var CardData_json_url = "https://spreadsheets.google.com/feeds/list/1N-3BVlH3kYPkZ_gWyaInaBa1y4OQJ59PRHs0N0w51Dk/1/public/values?alt=json";
-
+    
     var send_url="https://script.google.com/macros/s/AKfycbzj7N0OxrrrbKeOW2TFfrDQtwkguqKGHe1hvauO2O9Wx1yec2hN/exec?";
-
-
+    
 var SetIntervalMixin = {
       componentWillMount(){
         this.intervals = [];
@@ -89,11 +85,11 @@ var SetIntervalMixin = {
     getInitialState(){
       return {seconds: 0,id: '',pw: '',gas: ''};
     },
-
+    
     componentDidMount(){
         this.getDBjson();
     },
-
+    
     getDBjson(){
         var this1=this;
         $.ajax({
