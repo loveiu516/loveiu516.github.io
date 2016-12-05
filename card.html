@@ -145,26 +145,26 @@ var SetIntervalMixin = {
         dropdown3Menu.splice(0,dropdown3Menu.length);
         dropdown4Menu.splice(0,dropdown4Menu.length);
         
-        if(dropdown1Val == "全專輯" & dropdown2Val == "全成員"){
+        if(dropdown1Val == "全專輯" && dropdown2Val == "全成員"){
             for(var i=0;i<CardData_json.feed.entry.length;i++){
                 dropdown3Menu.splice(dropdown3Menu.length,0,<MenuItem eventKey={CardData_json.feed.entry[i].gsx$id.$t} onSelect={this.handleChange3}>{CardData_json.feed.entry[i].gsx$id.$t}.{CardData_json.feed.entry[i].gsx$cardname.$t}</MenuItem>);
                 dropdown4Menu.splice(dropdown3Menu.length,0,<MenuItem eventKey={CardData_json.feed.entry[i].gsx$id.$t} onSelect={this.handleChange4}>{CardData_json.feed.entry[i].gsx$id.$t}.{CardData_json.feed.entry[i].gsx$cardname.$t}</MenuItem>);
                 }
-        }else if(dropdown1Val == "全專輯" & dropdown2Val != "全成員"){
+        }else if(dropdown1Val == "全專輯" && dropdown2Val != "全成員"){
             for(var i=0;i<CardData_json.feed.entry.length;i++){
                 if(CardData_json.feed.entry[i].gsx$membername.$t == dropdown2Val){
                 dropdown3Menu.splice(dropdown3Menu.length,0,<MenuItem eventKey={CardData_json.feed.entry[i].gsx$id.$t} onSelect={this.handleChange3}>{CardData_json.feed.entry[i].gsx$id.$t}.{CardData_json.feed.entry[i].gsx$cardname.$t}</MenuItem>);
                 dropdown4Menu.splice(dropdown3Menu.length,0,<MenuItem eventKey={CardData_json.feed.entry[i].gsx$id.$t} onSelect={this.handleChange4}>{CardData_json.feed.entry[i].gsx$id.$t}.{CardData_json.feed.entry[i].gsx$cardname.$t}</MenuItem>);
                 }
             }
-        }else if(dropdown1Val != "全專輯" & dropdown2Val == "全成員"){
+        }else if(dropdown1Val != "全專輯" && dropdown2Val == "全成員"){
             for(var i=0;i<CardData_json.feed.entry.length;i++){
                 if(CardData_json.feed.entry[i].gsx$albumname.$t == dropdown1Val){
                 dropdown3Menu.splice(dropdown3Menu.length,0,<MenuItem eventKey={CardData_json.feed.entry[i].gsx$id.$t} onSelect={this.handleChange3}>{CardData_json.feed.entry[i].gsx$id.$t}.{CardData_json.feed.entry[i].gsx$cardname.$t}</MenuItem>);
                 dropdown4Menu.splice(dropdown3Menu.length,0,<MenuItem eventKey={CardData_json.feed.entry[i].gsx$id.$t} onSelect={this.handleChange4}>{CardData_json.feed.entry[i].gsx$id.$t}.{CardData_json.feed.entry[i].gsx$cardname.$t}</MenuItem>);
                 }
             }
-        }else if(dropdown1Val != "全專輯" & dropdown2Val != "全成員"){
+        }else if(dropdown1Val != "全專輯" && dropdown2Val != "全成員"){
             for(var i=0;i<CardData_json.feed.entry.length;i++){
                 if(CardData_json.feed.entry[i].gsx$albumname.$t == dropdown1Val & CardData_json.feed.entry[i].gsx$membername.$t == dropdown2Val){
                 dropdown3Menu.splice(dropdown3Menu.length,0,<MenuItem eventKey={CardData_json.feed.entry[i].gsx$id.$t} onSelect={this.handleChange3}>{CardData_json.feed.entry[i].gsx$id.$t}.{CardData_json.feed.entry[i].gsx$cardname.$t}</MenuItem>);
@@ -181,26 +181,26 @@ var SetIntervalMixin = {
         dropdown3Menu.splice(0,dropdown3Menu.length);
         dropdown4Menu.splice(0,dropdown4Menu.length);
         
-        if(dropdown1Val == "全專輯" & dropdown2Val == "全成員"){
+        if(dropdown1Val == "全專輯" && dropdown2Val == "全成員"){
             for(var i=0;i<CardData_json.feed.entry.length;i++){
                 dropdown3Menu.splice(dropdown3Menu.length,0,<MenuItem eventKey={CardData_json.feed.entry[i].gsx$id.$t} onSelect={this.handleChange3}>{CardData_json.feed.entry[i].gsx$id.$t}.{CardData_json.feed.entry[i].gsx$cardname.$t}</MenuItem>);
                 dropdown4Menu.splice(dropdown3Menu.length,0,<MenuItem eventKey={CardData_json.feed.entry[i].gsx$id.$t} onSelect={this.handleChange4}>{CardData_json.feed.entry[i].gsx$id.$t}.{CardData_json.feed.entry[i].gsx$cardname.$t}</MenuItem>);
                 }
-        }else if(dropdown1Val == "全專輯" & dropdown2Val != "全成員"){
+        }else if(dropdown1Val == "全專輯" && dropdown2Val != "全成員"){
             for(var i=0;i<CardData_json.feed.entry.length;i++){
                 if(CardData_json.feed.entry[i].gsx$membername.$t == dropdown2Val){
                 dropdown3Menu.splice(dropdown3Menu.length,0,<MenuItem eventKey={CardData_json.feed.entry[i].gsx$id.$t} onSelect={this.handleChange3}>{CardData_json.feed.entry[i].gsx$id.$t}.{CardData_json.feed.entry[i].gsx$cardname.$t}</MenuItem>);
                 dropdown4Menu.splice(dropdown3Menu.length,0,<MenuItem eventKey={CardData_json.feed.entry[i].gsx$id.$t} onSelect={this.handleChange4}>{CardData_json.feed.entry[i].gsx$id.$t}.{CardData_json.feed.entry[i].gsx$cardname.$t}</MenuItem>);
                 }
             }
-        }else if(dropdown1Val != "全專輯" & dropdown2Val == "全成員"){
+        }else if(dropdown1Val != "全專輯" && dropdown2Val == "全成員"){
             for(var i=0;i<CardData_json.feed.entry.length;i++){
                 if(CardData_json.feed.entry[i].gsx$albumname.$t == dropdown1Val){
                 dropdown3Menu.splice(dropdown3Menu.length,0,<MenuItem eventKey={CardData_json.feed.entry[i].gsx$id.$t} onSelect={this.handleChange3}>{CardData_json.feed.entry[i].gsx$id.$t}.{CardData_json.feed.entry[i].gsx$cardname.$t}</MenuItem>);
                 dropdown4Menu.splice(dropdown3Menu.length,0,<MenuItem eventKey={CardData_json.feed.entry[i].gsx$id.$t} onSelect={this.handleChange4}>{CardData_json.feed.entry[i].gsx$id.$t}.{CardData_json.feed.entry[i].gsx$cardname.$t}</MenuItem>);
                 }
             }
-        }else if(dropdown1Val != "全專輯" & dropdown2Val != "全成員"){
+        }else if(dropdown1Val != "全專輯" && dropdown2Val != "全成員"){
             for(var i=0;i<CardData_json.feed.entry.length;i++){
                 if(CardData_json.feed.entry[i].gsx$albumname.$t == dropdown1Val & CardData_json.feed.entry[i].gsx$membername.$t == dropdown2Val){
                 dropdown3Menu.splice(dropdown3Menu.length,0,<MenuItem eventKey={CardData_json.feed.entry[i].gsx$id.$t} onSelect={this.handleChange3}>{CardData_json.feed.entry[i].gsx$id.$t}.{CardData_json.feed.entry[i].gsx$cardname.$t}</MenuItem>);
