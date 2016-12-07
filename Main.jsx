@@ -426,4 +426,4 @@ var Main = React.createClass({
         );
     }
 });
-ReactDOM.render(<Main />, main);
+React.render(<Main />, main);
