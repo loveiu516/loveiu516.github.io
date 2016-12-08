@@ -33,6 +33,7 @@ var Wish_List = [];
 
 var Release_List_Table = [];
 var Wish_List_Table = [];
+var lookup_Table = [];
 
 var CardData_json = {};
 
@@ -40,7 +41,9 @@ var AlbumData_json_url = "https://spreadsheets.google.com/feeds/list/1N-3BVlH3kY
 var MemberData_json_url = "https://spreadsheets.google.com/feeds/list/1N-3BVlH3kYPkZ_gWyaInaBa1y4OQJ59PRHs0N0w51Dk/4/public/values?alt=json";
 var CardData_json_url = "https://spreadsheets.google.com/feeds/list/1N-3BVlH3kYPkZ_gWyaInaBa1y4OQJ59PRHs0N0w51Dk/1/public/values?alt=json";
 
-var send_url = "https://script.google.com/macros/s/AKfycbzj7N0OxrrrbKeOW2TFfrDQtwkguqKGHe1hvauO2O9Wx1yec2hN/exec?";
+var AddTrad_url    = "https://script.google.com/macros/s/AKfycbzj7N0OxrrrbKeOW2TFfrDQtwkguqKGHe1hvauO2O9Wx1yec2hN/exec";
+var LookupUser_url = "https://script.google.com/macros/s/AKfycbwID2654uS6RVgYsl6LrjSefzy8B29z4At7A0LkLx0EAqOLc3QU/exec";
+var RemoveTrad_url = "https://script.google.com/macros/s/AKfycbzafta8A5rQXFvHnmMDGiAk-uuHiN2pHxBKev4Fr7u_AsRnUdzg/exec";
 
 var SetIntervalMixin = {
     componentWillMount() {
@@ -58,7 +61,7 @@ var SetIntervalMixin = {
 var Main = React.createClass({
     mixins: [SetIntervalMixin],
     getInitialState() {
-        return { seconds: 0, id: '', pw: '', gas: '' };
+        return {id: '', pw: '', gas: '',userdata: {},RemoveTrad: ''};
     },
 
     componentDidMount() {
@@ -258,18 +261,17 @@ var Main = React.createClass({
         this.forceUpdate();
     },
 
-    send() {
-        console.log("send");
+    add() {
+        var this1 = this;
+        console.log("add");
 
         console.log(this.state.id);
         console.log(this.state.pw);
 
         console.log(Release_List.toString());
         console.log(Wish_List.toString());
-        var this1 = this;
-
         $.ajax({
-            url: send_url + "User_ID=" + this.state.id + "&User_PW=" + this.state.pw + "&Release_List=" + Release_List.toString() + "&Wish_List=" + Wish_List.toString(),
+            url: AddTrad_url + "?User_ID=" + this.state.id + "&User_PW=" + this.state.pw + "&Release_List=" + Release_List.toString() + "&Wish_List=" + Wish_List.toString(),
             global: false,
             type: 'GET',
             dataType: 'text',
@@ -280,13 +282,11 @@ var Main = React.createClass({
 
             }
         });
-        this.clear();
-    },
-
-    clear() {
         this.setState({ id: '' });
         this.setState({ pw: '' });
+        this.setState({ RmTrad_ID: '' });
     },
+
 
     inputhandleChange1(e) {
         this.setState({ id: e.target.value });
@@ -294,6 +294,70 @@ var Main = React.createClass({
 
     inputhandleChange2(e) {
         this.setState({ pw: e.target.value });
+    },
+
+    inputhandleChange3(e) {
+        this.setState({ RemoveTrad: e.target.value });
+    },
+
+
+    lookup() {
+        var this1 = this;
+        console.log("lookup");
+        
+        console.log(this.state.id);
+        $.ajax({
+            url: LookupUser_url + "?User_ID=" + this.state.id,
+            global: false,
+            type: 'GET',
+            dataType: 'text',
+            async: true,
+            success: function (text) {
+                console.log(text);
+                if (text == "ID is null"){
+                    this1.setState({ gas: text });
+
+                }else if (text == "ID 404"){
+                    this1.setState({ gas: text });
+
+                }else{
+                    this1.setState({ userdata: JSON.parse(text) });
+                    this1.setState({ gas: "Select " + this1.state.id });
+                }
+                
+
+                lookup_Table.splice(0, lookup_Table.length);
+                for (var i = 0; i < Object.keys(this1.state.userdata).length; i++) {
+                    lookup_Table.splice(lookup_Table.length, 0, <tr><th>{Object.keys(this1.state.userdata)[i]}</th>
+                    <th>{this1.state.userdata[Object.keys(this1.state.userdata)[i].toString()]}</th></tr>);
+                }
+                this1.forceUpdate();
+            }
+        });
+    },
+
+    rm() {
+        var this1 = this;
+        console.log("rm");
+        
+        console.log(this.state.id);
+        console.log(this.state.pw);
+        console.log(this.state.RemoveTrad);
+        
+        $.ajax({
+            url: RemoveTrad_url + "?User_ID=" + this.state.id + "&User_PW=" + this.state.pw + "&RmTrad_ID=" + this.state.RemoveTrad,
+            global: false,
+            type: 'GET',
+            dataType: 'text',
+            async: true,
+            success: function (text) {
+                console.log(text);
+                this1.setState({ gas: text });
+                this1.setState({ pw: '' });
+                this1.setState({ RemoveTrad: '' });
+            }
+        });
+        
     },
 
 
@@ -306,7 +370,7 @@ var Main = React.createClass({
                             <FormGroup controlId="formHorizontalEmail">
                                 <Col componentClass={ControlLabel} sm={2}>
                                     Email
-                </Col>
+                                </Col>
                                 <Col sm={10}>
                                     <FormControl value={this.state.id} onChange={this.inputhandleChange1} type="email" placeholder="Email" />
                                 </Col>
@@ -315,7 +379,7 @@ var Main = React.createClass({
                             <FormGroup controlId="formHorizontalPassword">
                                 <Col componentClass={ControlLabel} sm={2}>
                                     Password
-                </Col>
+                                </Col>
                                 <Col sm={10}>
                                     <FormControl value={this.state.pw} onChange={this.inputhandleChange2} type="password" placeholder="Password" />
                                 </Col>
@@ -408,18 +472,78 @@ var Main = React.createClass({
                             <Row className="show-grid">
                                 <FormGroup>
                                     <Col sm={12}>
-                                        <Button bsStyle="primary" bsSize="large" onClick={this.send} block>送出</Button>
+                                        <Button bsStyle="primary" bsSize="large" onClick={this.add} block>新增</Button>
                                         <FormControl value={this.state.gas} type="text" />
                                     </Col>
                                 </FormGroup>
                             </Row>
                         </Panel>
 
-                        <Panel header=<h0>查詢卡片</h0> bsStyle="info">
+                        
+
+                        <Panel header=<h0>使用者查詢</h0> bsStyle="info">
+
+                         <FormGroup controlId="formHorizontalEmail">
+                                <Col componentClass={ControlLabel} sm={2}>
+                                    Email
+                                </Col>
+                                <Col sm={10}>
+                                    <FormControl value={this.state.id} onChange={this.inputhandleChange1} type="email" placeholder="Email" />
+                                </Col>
+
+                                <Col sm={12}>
+                                <Button bsStyle="primary" bsSize="large" onClick={this.lookup} block>查詢</Button>
+                                <FormControl value={this.state.gas} type="text" />
+                                </Col>
+                                
+                                <Col sm={12}>
+                                    <Table striped bordered condensed hover>
+                                        <thead>
+                                            <tr>
+                                                <th>項目</th>
+                                                <th>資訊</th>
+                                            </tr>
+                                            {lookup_Table}
+                                        </thead>
+                                    </Table>
+                                </Col>
+                            </FormGroup>
                         </Panel>
 
-                        <Panel header=<h0>刪除換卡資訊</h0> bsStyle="info">
+                        <Panel header=<h0>刪除卡片資訊</h0> bsStyle="info">
+
+                            <FormGroup controlId="formHorizontalEmail">
+                                <Col componentClass={ControlLabel} sm={2}>
+                                    Email
+                                </Col>
+                                <Col sm={10}>
+                                    <FormControl value={this.state.id} onChange={this.inputhandleChange1} type="email" placeholder="Email" />
+                                </Col>
+                            </FormGroup>
+
+                            <FormGroup controlId="formHorizontalPassword">
+                                <Col componentClass={ControlLabel} sm={2}>
+                                    Password
+                                </Col>
+                                <Col sm={10}>
+                                    <FormControl value={this.state.pw} onChange={this.inputhandleChange2} type="password" placeholder="Password" />
+                                </Col>
+                            </FormGroup>
+
+                            <FormGroup controlId="formHorizontalRemoveTrad">
+                                <Col componentClass={ControlLabel} sm={2}>
+                                    換卡資訊ID
+                                </Col>
+                                <Col sm={10}>
+                                    <FormControl value={this.state.RemoveTrad} onChange={this.inputhandleChange3} type="text" placeholder="換卡資訊ID" />
+                                </Col>
+                            </FormGroup>
+
+                            <Button bsStyle="primary" bsSize="large" onClick={this.rm} block>刪除</Button>
+                            <FormControl value={this.state.gas} type="text" />
+
                         </Panel>
+
                     </Pager>
                 </Row>
             </Grid>
