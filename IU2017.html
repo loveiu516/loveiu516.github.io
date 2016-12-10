@@ -6,7 +6,7 @@
     <title>自己刪</title>
   </head>
     <!-- jquery -->
-    <script src="https://loveiu516.github.io/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <body>
 
     <label>編號:</label>
@@ -22,8 +22,6 @@
 
 
     <script>
-    console.log("123");
-
    $("button").click(function(){
         $.ajax({
             url: "https://script.google.com/macros/s/AKfycbylqNYylO7zM92ke-7Zw2JFy2VNPHyrrcBhs9Oq1dllGyCDoS4/exec?" + "number=" + $("#number").val() + "&passwd=" + $("#passwd").val() ,
