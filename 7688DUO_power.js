@@ -34,7 +34,7 @@ function periodicActivity() {
     }).on('error', function (e) {
         process.exit(1);
     });
-    setTimeout(periodicActivity, 15000);
+    setTimeout(periodicActivity, 5000);
 }
 
 function periodicActivity2() {
@@ -50,7 +50,7 @@ function periodicActivity2() {
             }
             if (obj.light1 == 1) {
                 serialPort.write("light1on")
-                // console.log("light1on")
+            //     console.log("light1on")
             }
             if (obj.light2 == 0) {
                 serialPort.write("light2off")
