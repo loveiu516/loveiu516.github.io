@@ -16,12 +16,13 @@
   <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
   <!-- react-bootstrap -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.30.7/react-bootstrap.min.js"></script>
+  <!-- babel -->
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 </head>
 
 <body>
   <div id="main"></div>
-  <!-- babel -->
-  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  
   <script type="text/babel">
     var Alert = ReactBootstrap.Alert;
     var Label = ReactBootstrap.Label;
@@ -42,7 +43,6 @@
     var light6 = "";
     var light7 = "";
     var light8 = "";
-
     var pwd = "";
     
     var set_timer = "https://script.google.com/macros/s/AKfycbxK9ykf-Tm612OX8QIwstqzO_2cEArrjS7p6MPPWCnIxysAj8M/exec";
@@ -54,24 +54,20 @@
       constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
-        this.autoctrl = this.autoctrl.bind(this);
-        
-        this.state = {pwd: '',result: ''};
       }
       
       handleChange(e) {
-        this.setState({pwd: e.target.value});
         pwd = e.target.value;
+        this.setState();
       }
-
+      
       componentDidMount() {
         this.getstatus();
         this.getlight();
         this.interval = setInterval(() => this.getlight(), 10000);
         this.interval = setInterval(() => this.getstatus(), 10000);
-        }
-        
-
+      }
+      
       getstatus(){
         $.ajax({
         url: getstatusURL,
@@ -95,8 +91,7 @@
           })
        }
        
-
-      getlight(){
+       getlight(){
         $.ajax({
         url: getlightURL,
         type: 'GET',
