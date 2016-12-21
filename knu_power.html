@@ -24,8 +24,6 @@
   <div id="main"></div>
   
   <script type="text/babel">
-  
-    var Alert = ReactBootstrap.Alert;
     var Label = ReactBootstrap.Label;
     var ButtonToolbar = ReactBootstrap.ButtonToolbar;
     var Button = ReactBootstrap.Button;
@@ -34,7 +32,8 @@
     var Panel = ReactBootstrap.Panel;
     var Grid = ReactBootstrap.Grid;
     var Pager = ReactBootstrap.Pager;
-
+    var FormControl = ReactBootstrap.FormControl;
+    
     var status="";
     var light1 = "";
     var light2 = "";
@@ -180,6 +179,7 @@
           })
          .done(function(text) {
            setTimeout(() => {this.getstatus();this.getlight();}, 500);
+           ReactDOM.render(<h4><Label bsStyle="info">{text}</Label></h4>,document.getElementById('result'));
            console.log(text);
            }.bind(this))
          }
@@ -534,7 +534,12 @@
                       <Col xs={3} md={3}>
                       <div id="light_8"></div>
                       </Col>
-                      <input onChange={this.handleChange.bind(this)} value={pwd} />
+                      <Col xs={3} md={3}>
+                      <FormControl type="text" placeholder="PassWord" onChange={this.handleChange.bind(this)} value={pwd}></FormControl>
+                      </Col>
+                      <Col xs={3} md={3}>
+                      <div id="result" />
+                      </Col>
                   </Panel>
                 </Pager>
 
