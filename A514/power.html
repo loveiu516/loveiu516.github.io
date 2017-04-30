@@ -43,8 +43,6 @@
 	var light8 = "";
 	var pwd = "";
 
-
-	var getstatusURL = "https://spreadsheets.google.com/feeds/list/1B53JM_UjhF7kX9LuYhnncnVNMJaOX8DjLwBaRIsHblI/1/public/values?alt=json";
 	var get_timerURL = "https://script.google.com/macros/s/AKfycbwJUakfxufgx96j3oye5WGsTj7qVpIs0XqYqO5cp1Sq4_LqF_cn/exec";
 	var set_timerURL = "https://script.google.com/macros/s/AKfycbyLYkMhy02mDd5ARlgo8y_MrFBIt1f33Hx5zJTeoBBTiF8b_dXk/exec";
 
@@ -55,43 +53,20 @@
       }
       
       componentDidMount() {
-        this.getstatus();
         this.getlight();
-        this.interval = setInterval(() => {this.getlight();this.getstatus();}, 10000);
+        this.interval = setInterval(() => {this.getlight();}, 30000);
       }
       
-      getstatus = () => {
-          console.log("getstatus()");
-          $.ajax({
-            url: getstatusURL,
-            type: 'GET',
-            dataType: 'json'
-            })
-            .done(function(json) {
-                var e = json.feed.entry;
-                var l = e.length;
-                var i, entry;
-                for (i = 0; i < l; i++) {
-                    entry = e[i];
-                    status = entry.gsx$status.$t;
-                    if (status==0) {
-                    ReactDOM.render(<h1><Label bsStyle="danger">目前狀態:自動控制</Label></h1>,document.getElementById('status_show'));
-                    }
-                    if (status==1) {
-                    ReactDOM.render(<h1><Label bsStyle="danger">目前狀態:手動控制</Label></h1>,document.getElementById('status_show'));
-                    }
-                }
-            })
-            }
-       
        getlight = () => {
-         console.log("getlight()");
-          $.ajax({
-          url: get_timerURL,
-          type: 'GET',
-          dataType: 'json'
-          })
-          .done(function(json) {
+           console.log("getlight()");
+           $.ajax({
+               url: get_timerURL,
+               type: 'GET',
+               dataType: 'json'
+               })
+                .done(function(json) {
+
+              status = json.status;
               light1 = json.light1;
               light2 = json.light2;
               light3 = json.light3;
@@ -100,6 +75,13 @@
               light6 = json.light6;
               light7 = json.light7;
               light8 = json.light8;
+
+              if (status==0) {
+              ReactDOM.render(<h1><Label bsStyle="danger">目前狀態:自動控制</Label></h1>,document.getElementById('status_show'));
+              }
+              if (status==1) {
+              ReactDOM.render(<h1><Label bsStyle="danger">目前狀態:手動控制</Label></h1>,document.getElementById('status_show'));
+              }
 
               if (light1==0) {
               ReactDOM.render(<h1><Label bsStyle="danger">燈1:關</Label></h1>,document.getElementById('light_1'));
@@ -171,7 +153,7 @@
             }
           })
          .done(function(text) {
-           setTimeout(() => {this.getstatus();this.getlight();}, 500);
+           setTimeout(() => {this.getlight();}, 1000);
            ReactDOM.render(<h4><Label bsStyle="info">{text}</Label></h4>,document.getElementById('result'));
            console.log(text);
            }.bind(this))
@@ -190,7 +172,7 @@
             }
           })
           .done(function(text) {
-          setTimeout(() => {this.getstatus();this.getlight();}, 500);
+          setTimeout(() => {this.getlight();}, 1000);
 	  ReactDOM.render(<h4><Label bsStyle="info">{text}</Label></h4>,document.getElementById('result'));
           console.log(text);
           }.bind(this))
@@ -209,7 +191,7 @@
             }
             })
             .done(function(text) {
-          setTimeout(() => {this.getstatus();this.getlight();}, 500);
+          setTimeout(() => {this.getlight();}, 1000);
 	  ReactDOM.render(<h4><Label bsStyle="info">{text}</Label></h4>,document.getElementById('result'));
           console.log(text);
           }.bind(this))
@@ -228,7 +210,7 @@
             }
             })
             .done(function(text) {
-          setTimeout(() => {this.getstatus();this.getlight();}, 500);
+          setTimeout(() => {this.getlight();}, 1000);
 	  ReactDOM.render(<h4><Label bsStyle="info">{text}</Label></h4>,document.getElementById('result'));
           console.log(text);
           }.bind(this))
@@ -247,7 +229,7 @@
             }
             })
             .done(function(text) {
-          setTimeout(() => {this.getstatus();this.getlight();}, 500);
+          setTimeout(() => {this.getlight();}, 1000);
 	  ReactDOM.render(<h4><Label bsStyle="info">{text}</Label></h4>,document.getElementById('result'));
           console.log(text);
           }.bind(this))
@@ -266,7 +248,7 @@
             }
             })
             .done(function(text) {
-          setTimeout(() => {this.getstatus();this.getlight();}, 500);
+          setTimeout(() => {this.getlight();}, 1000);
 	  ReactDOM.render(<h4><Label bsStyle="info">{text}</Label></h4>,document.getElementById('result'));
           console.log(text);
           }.bind(this))
@@ -285,7 +267,7 @@
             }
             })
             .done(function(text) {
-          setTimeout(() => {this.getstatus();this.getlight();}, 500);
+          setTimeout(() => {this.getlight();}, 1000);
 	  ReactDOM.render(<h4><Label bsStyle="info">{text}</Label></h4>,document.getElementById('result'));
           console.log(text);
           }.bind(this))
@@ -304,7 +286,7 @@
             }
             })
             .done(function(text) {
-          setTimeout(() => {this.getstatus();this.getlight();}, 500);
+          setTimeout(() => {this.getlight();}, 1000);
 	  ReactDOM.render(<h4><Label bsStyle="info">{text}</Label></h4>,document.getElementById('result'));
           console.log(text);
           }.bind(this))
@@ -323,7 +305,7 @@
             }
             })
             .done(function(text) {
-          setTimeout(() => {this.getstatus();this.getlight();}, 500);
+          setTimeout(() => {this.getlight();}, 1000);
 	  ReactDOM.render(<h4><Label bsStyle="info">{text}</Label></h4>,document.getElementById('result'));
           console.log(text);
           }.bind(this))
@@ -342,7 +324,7 @@
             }
             })
             .done(function(text) {
-          setTimeout(() => {this.getstatus();this.getlight();}, 500);
+          setTimeout(() => {this.getlight();}, 1000);
 	  ReactDOM.render(<h4><Label bsStyle="info">{text}</Label></h4>,document.getElementById('result'));
           console.log(text);
           }.bind(this))
@@ -361,7 +343,7 @@
             }
             })
             .done(function(text) {
-          setTimeout(() => {this.getstatus();this.getlight();}, 500);
+          setTimeout(() => {this.getlight();}, 1000);
 	  ReactDOM.render(<h4><Label bsStyle="info">{text}</Label></h4>,document.getElementById('result'));
           console.log(text);
           }.bind(this))
@@ -380,7 +362,7 @@
             }
             })
             .done(function(text) {
-          setTimeout(() => {this.getstatus();this.getlight();}, 500);
+          setTimeout(() => {this.getlight();}, 1000);
 	  ReactDOM.render(<h4><Label bsStyle="info">{text}</Label></h4>,document.getElementById('result'));
           console.log(text);
           }.bind(this))
@@ -399,7 +381,7 @@
             }
             })
             .done(function(text) {
-          setTimeout(() => {this.getstatus();this.getlight();}, 500);
+          setTimeout(() => {this.getlight();}, 1000);
 	  ReactDOM.render(<h4><Label bsStyle="info">{text}</Label></h4>,document.getElementById('result'));
           console.log(text);
           }.bind(this))
@@ -418,7 +400,7 @@
             }
             })
             .done(function(text) {
-          setTimeout(() => {this.getstatus();this.getlight();}, 500);
+          setTimeout(() => {this.getlight();}, 1000);
 	  ReactDOM.render(<h4><Label bsStyle="info">{text}</Label></h4>,document.getElementById('result'));
           console.log(text);
           }.bind(this))
@@ -437,7 +419,7 @@
             }
             })
             .done(function(text) {
-          setTimeout(() => {this.getstatus();this.getlight();}, 500);
+          setTimeout(() => {this.getlight();}, 1000);
 	  ReactDOM.render(<h4><Label bsStyle="info">{text}</Label></h4>,document.getElementById('result'));
           console.log(text);
           }.bind(this))
@@ -456,7 +438,7 @@
             }
             })
             .done(function(text) {
-          setTimeout(() => {this.getstatus();this.getlight();}, 500);
+          setTimeout(() => {this.getlight();}, 1000);
 	  ReactDOM.render(<h4><Label bsStyle="info">{text}</Label></h4>,document.getElementById('result'));
           console.log(text);
           }.bind(this))
@@ -475,7 +457,7 @@
             }
             })
             .done(function(text) {
-          setTimeout(() => {this.getstatus();this.getlight();}, 500);
+          setTimeout(() => {this.getlight();}, 1000);
 	  ReactDOM.render(<h4><Label bsStyle="info">{text}</Label></h4>,document.getElementById('result'));
           console.log(text);
           }.bind(this))
@@ -494,7 +476,7 @@
             }
             })
             .done(function(text) {
-          setTimeout(() => {this.getstatus();this.getlight();}, 500);
+          setTimeout(() => {this.getlight();}, 1000);
 	  ReactDOM.render(<h4><Label bsStyle="info">{text}</Label></h4>,document.getElementById('result'));
           console.log(text);
           }.bind(this))
