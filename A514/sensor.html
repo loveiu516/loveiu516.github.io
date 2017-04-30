@@ -1,0 +1,367 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>感測器顯示</title>
+    <link rel="icon" href="https://i.imgur.com/TUpTQag.png">
+    <!-- jquery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!-- bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-+ENW/yibaokMnme+vBLnHMphUYxHs34h9lpdbSLuAwGkOKFRl4C34WkjazBtb7eT" crossorigin="anonymous">
+    <!-- react -->
+    <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+    <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+    <!-- babel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>
+    <!-- react-bootstrap -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.30.7/react-bootstrap.min.js"></script>
+    <!-- googel chart -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+    google.charts.load('current', {packages:['gauge','corechart','line']});
+    </script>
+    <!-- zoom.js -->
+    <link rel="stylesheet" type="text/css" href="https://fat.github.io/zoom.js/css/zoom.css">
+    <script src="https://fat.github.io/zoom.js/js/zoom.js"></script>
+</head>
+
+<body style="background-color:#00FFCC;">
+    <div id="main"></div>
+    <script type="text/babel">
+    var Grid=ReactBootstrap.Grid;
+    var Row=ReactBootstrap.Row;
+    var Col=ReactBootstrap.Col;
+    var ButtonsInstance = ReactBootstrap.ButtonsInstance;
+    var ButtonToolbar = ReactBootstrap.ButtonToolbar;
+    var ButtonInput = ReactBootstrap.ButtonInput;
+    var Button = ReactBootstrap.Button;
+    var Label = ReactBootstrap.Label;
+    var Input = ReactBootstrap.Input;
+    var Tabs = ReactBootstrap.Tabs;
+    var Tab = ReactBootstrap.Tab;
+    var Image = ReactBootstrap.Image;
+    var Glyphicon=ReactBootstrap.Glyphicon;
+    var Jumbotron=ReactBootstrap.Jumbotron;
+    var Pager=ReactBootstrap.Pager;
+    var Panel=ReactBootstrap.Panel;
+    var ListGroupItem=ReactBootstrap.ListGroupItem;
+    var ResponsiveEmbed=ReactBootstrap.ResponsiveEmbed;
+
+    var tt = 0;
+    var hh = 0;
+    var ww = 0;
+    var img = "";
+
+    var tt_time;
+    var hh_time;
+    var ww_time;
+    var img_time;
+    
+    var SetIntervalMixin = {
+      componentWillMount(){
+        this.intervals = [];
+      },
+      setInterval(){
+        this.intervals.push(setInterval.apply(null, arguments));
+      },
+      componentWillUnmount(){
+        this.intervals.forEach(clearInterval);
+      }
+    };
+    
+    var ButtonInput = React.createClass({
+    mixins: [SetIntervalMixin],
+    getInitialState(){
+      return {seconds: 0};
+    },
+
+    componentDidMount(){
+      this.getsensortt();
+      this.getsensorhh();
+      this.getsensorww();
+      this.getimg();
+
+      this.setInterval(this.getsensortt, 10000);
+      this.setInterval(this.getsensorhh, 10000);
+      this.setInterval(this.getsensorww, 10000);
+      this.setInterval(this.getimg, 10000);
+    },
+
+    getimg(){
+      $.ajax({
+        type: "GET",
+        url: "https://api.mediatek.com/mcs/v2/devices/DcOTP6gp/datachannels/img/datapoints",
+        headers: { deviceKey: "GBcYRMAaBj2kz8uE" },
+        contentType: "application/json",
+        async: true,
+        success: function(json) {
+          img = "https://d39ee14my13iuq.cloudfront.net/DcOTP6gp/img/" + json.dataChannels[0].dataPoints[0].values.value;
+          img_time = new Date(json.dataChannels[0].dataPoints[0].recordedAt);
+
+          ReactDOM.render(<h1>RELOAD</h1>,document.getElementById('img'));
+          ReactDOM.render(<img src={img} data-action="zoom" class="img-rounded" alt="Cinque Terre" width="100%"/>,document.getElementById('img'));
+          ReactDOM.render(<h1><Label bsStyle="danger">{String(img_time.getMonth()+1) +"/"+ String(img_time.getDate()) +" "+ String(img_time.getHours()) +":"+ String(img_time.getMinutes())}</Label></h1>,document.getElementById('img_show'));
+        }
+      });
+    },
+    
+    getsensortt(){
+        $.ajax({
+          type: "GET",
+          url: "https://api.mediatek.com/mcs/v2/devices/DcOTP6gp/datachannels/tt/datapoints",
+          headers: { deviceKey: "GBcYRMAaBj2kz8uE" },
+          contentType: "application/json",
+          async: true,
+          success: function(json) {
+            tt = json.dataChannels[0].dataPoints[0].values.value;
+            tt_time = new Date(json.dataChannels[0].dataPoints[0].recordedAt);
+            
+            google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {        
+        var datatt = google.visualization.arrayToDataTable(JSON.parse('[["Label","Value"],["溫度",' + tt + ']]'));
+        
+
+        var optionstt = {
+          width: 280,
+          height: 280,
+          redFrom: 30,
+          redTo: 50,
+          yellowFrom:10,          
+          yellowTo: 20,
+          greenFrom: 20,
+          greenTo:30,
+          minorTicks: 10,
+          min:10,
+          max:50
+        };
+
+        var charttt = new google.visualization.Gauge(document.getElementById('tt_chart'));
+        charttt.draw(datatt, optionstt);
+
+        }
+        
+        ReactDOM.render(<h1><Label bsStyle="danger">目前溫度: {tt} °C</Label><br/><Label bsStyle="danger">{String(tt_time.getMonth()+1) +"/"+ String(tt_time.getDate()) +" "+ String(tt_time.getHours()) +":"+ String(tt_time.getMinutes())}</Label></h1>,document.getElementById('tt_show'));
+        }
+      });
+    },
+
+    getsensorhh(){
+        $.ajax({
+          type: "GET",
+          url: "https://api.mediatek.com/mcs/v2/devices/DcOTP6gp/datachannels/hh/datapoints",
+          headers: { deviceKey: "GBcYRMAaBj2kz8uE" },
+          contentType: "application/json",
+          async: true,
+          success: function(json) {
+            hh = json.dataChannels[0].dataPoints[0].values.value;
+            hh_time = new Date(json.dataChannels[0].dataPoints[0].recordedAt);
+
+            google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var datahh = google.visualization.arrayToDataTable(JSON.parse('[["Label","Value"],["濕度",' + hh + ']]'));
+
+        var optionshh = {
+          width: 280,
+          height: 280,
+          redFrom: 70,
+          redTo: 100,
+          yellowFrom:0,          
+          yellowTo: 50,
+          greenFrom: 50,
+          greenTo:70,
+          minorTicks: 10,
+          min:0,
+          max:100
+        };
+
+        var charthh = new google.visualization.Gauge(document.getElementById('hh_chart'));
+        charthh.draw(datahh, optionshh);
+        }
+        
+        ReactDOM.render(<h1><Label bsStyle="danger">目前濕度: {hh} %</Label><br/><Label bsStyle="danger">{String(hh_time.getMonth()+1) +"/"+ String(hh_time.getDate()) +" "+ String(hh_time.getHours()) +":"+ String(hh_time.getMinutes())}</Label></h1>,document.getElementById('hh_show'));
+        }
+      });
+    },
+
+    getsensorww(){
+        $.ajax({
+          type: "GET",
+          url: "https://api.mediatek.com/mcs/v2/devices/DcOTP6gp/datachannels/ww/datapoints",
+          headers: { deviceKey: "GBcYRMAaBj2kz8uE" },
+          contentType: "application/json",
+          async: true,
+          success: function(json) {
+            ww = json.dataChannels[0].dataPoints[0].values.value;
+            ww_time = new Date(json.dataChannels[0].dataPoints[0].recordedAt);
+
+            google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var dataww = google.visualization.arrayToDataTable(JSON.parse('[["Label","Value"],["耗電",' + ww + ']]'));
+
+        var optionsww = {
+          width: 280,
+          height: 280,
+          redFrom: 70,
+          redTo: 100,
+          greenFrom: 0,
+          greenTo:150,
+          redFrom: 150,
+          redTo: 1000,
+          minorTicks: 10,
+          min:0,
+          max:1000
+        };
+
+        var charthh = new google.visualization.Gauge(document.getElementById('ww_chart'));
+        charthh.draw(dataww, optionsww);
+        }
+        
+        ReactDOM.render(<h1><Label bsStyle="danger">目前耗電: {ww} 瓦</Label><br/><Label bsStyle="danger">{String(ww_time.getMonth()+1) +"/"+ String(ww_time.getDate()) +" "+ String(ww_time.getHours()) +":"+ String(ww_time.getMinutes())}</Label></h1>,document.getElementById('ww_show'));
+        }
+      });
+    },
+    
+    gethistory(){
+        $.ajax({
+        url: get_sensor_history + "?tt=1",
+        global: false,
+        type: 'GET',
+        dataType: 'text',
+        async: true,
+          success: function(text) {
+            tthis = JSON.parse("[" + text + "]");
+            console.log(tthis);
+            google.charts.setOnLoadCallback(drawBasic);
+            function drawBasic() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', 'Time');
+            data.addColumn('number', '°C');
+            data.addRows(tthis);
+            var options = {
+              hAxis: {
+                title: 'Time'
+              },
+              vAxis: {
+                title: '°C'
+              }
+            };
+            var chart = new google.visualization.LineChart(document.getElementById('tt_his'));
+            chart.draw(data, options);
+            }
+          }
+        });
+
+        $.ajax({
+        url: get_sensor_history + "?hh=1",
+        global: false,
+        type: 'GET',
+        dataType: 'text',
+        async: true,
+          success: function(text) {
+            hhhis = JSON.parse("[" + text + "]");
+            console.log(hhhis);
+            google.charts.setOnLoadCallback(drawBasic);
+            function drawBasic() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', 'Time');
+            data.addColumn('number', '%');
+            data.addRows(hhhis);
+            var options = {
+              hAxis: {
+                title: 'Time'
+              },
+              vAxis: {
+                title: '%'
+              }
+            };
+            var chart = new google.visualization.LineChart(document.getElementById('hh_his'));
+            chart.draw(data, options);
+            }
+          }
+        });
+
+        $.ajax({
+        url: get_sensor_history + "?pp=1",
+        global: false,
+        type: 'GET',
+        dataType: 'text',
+        async: true,
+          success: function(text) {
+            pphis = JSON.parse("[" + text + "]");
+            console.log(pphis);
+            google.charts.setOnLoadCallback(drawBasic);
+            function drawBasic() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', 'Time');
+            data.addColumn('number', 'W');
+            data.addRows(pphis);
+            var options = {
+              hAxis: {
+                title: 'Time'
+              },
+              vAxis: {
+                title: 'W'
+              }
+            };
+            var chart = new google.visualization.LineChart(document.getElementById('pp_his'));
+            chart.draw(data, options);
+            }
+          }
+        });
+      },
+
+      render() {
+        return (
+        <Grid>
+        <Row className="well">
+             <Pager>
+             <Panel header=<h0>感測器</h0> bsStyle="info">
+
+              <Col xs={12} md={4}>
+              <center>
+              <div id="tt_chart"></div>
+              <div id="tt_show"></div>
+              </center>
+              </Col>
+
+              <Col xs={12} md={4}>
+              <center>
+              <div id="hh_chart"></div>
+              <div id="hh_show"></div>
+              </center>
+              </Col>
+
+              <Col xs={12} md={4}>
+              <center>
+              <div id="ww_chart"></div>
+              <div id="ww_show"></div>
+              </center>
+              </Col>
+              
+
+              <Col xs={12} md={12}>
+              <center>
+              <Panel header=<h0>攝影機</h0> bsStyle="info">
+              <center>
+              <div id="img"></div>
+              <div id="img_show"></div>
+              </center>
+              </Panel>
+              </center>
+              </Col>
+
+             </Panel>
+             </Pager>
+          </Row>
+        </Grid>
+        );
+      }
+    });
+    ReactDOM.render(<ButtonInput />, main);
+    </script>
+</body>
+
+</html>
