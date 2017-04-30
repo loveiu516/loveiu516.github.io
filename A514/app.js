@@ -125,6 +125,7 @@ function send() {
     var img = fs.readFileSync("/tmp/123.jpg");
     var img64 = new Buffer(img).toString('base64');
     client.publish('mcs/' + DeviceId + '/' + DeviceKey + '/img', ',img,' + img64, { qos: 0 });
+    fs.unlinkSync("/tmp/123.jpg");
 }
 
 function getsensor() {
