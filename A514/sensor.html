@@ -84,18 +84,16 @@
       this.getsensorww();
       this.getimg();
 
-      this.setInterval(this.getsensortt, 10000);
-      this.setInterval(this.getsensorhh, 10000);
-      this.setInterval(this.getsensorww, 10000);
-      this.setInterval(this.getimg, 10000);
+      this.setInterval(this.getsensortt, 30000);
+      this.setInterval(this.getsensorhh, 30000);
+      this.setInterval(this.getsensorww, 30000);
+      this.setInterval(this.getimg, 30000);
     },
 
     getimg(){
       $.ajax({
         type: "GET",
         url: "https://api.mediatek.com/mcs/v2/devices/DcOTP6gp/datachannels/img/datapoints",
-        headers: { deviceKey: "GBcYRMAaBj2kz8uE" },
-        contentType: "application/json",
         async: true,
         success: function(json) {
           img = "https://d39ee14my13iuq.cloudfront.net/DcOTP6gp/img/" + json.dataChannels[0].dataPoints[0].values.value;
@@ -112,8 +110,6 @@
         $.ajax({
           type: "GET",
           url: "https://api.mediatek.com/mcs/v2/devices/DcOTP6gp/datachannels/tt/datapoints",
-          headers: { deviceKey: "GBcYRMAaBj2kz8uE" },
-          contentType: "application/json",
           async: true,
           success: function(json) {
             tt = json.dataChannels[0].dataPoints[0].values.value;
@@ -152,8 +148,6 @@
         $.ajax({
           type: "GET",
           url: "https://api.mediatek.com/mcs/v2/devices/DcOTP6gp/datachannels/hh/datapoints",
-          headers: { deviceKey: "GBcYRMAaBj2kz8uE" },
-          contentType: "application/json",
           async: true,
           success: function(json) {
             hh = json.dataChannels[0].dataPoints[0].values.value;
@@ -190,8 +184,6 @@
         $.ajax({
           type: "GET",
           url: "https://api.mediatek.com/mcs/v2/devices/DcOTP6gp/datachannels/ww/datapoints",
-          headers: { deviceKey: "GBcYRMAaBj2kz8uE" },
-          contentType: "application/json",
           async: true,
           success: function(json) {
             ww = json.dataChannels[0].dataPoints[0].values.value;
@@ -224,97 +216,8 @@
       });
     },
     
-    gethistory(){
-        $.ajax({
-        url: get_sensor_history + "?tt=1",
-        global: false,
-        type: 'GET',
-        dataType: 'text',
-        async: true,
-          success: function(text) {
-            tthis = JSON.parse("[" + text + "]");
-            console.log(tthis);
-            google.charts.setOnLoadCallback(drawBasic);
-            function drawBasic() {
-            var data = new google.visualization.DataTable();
-            data.addColumn('number', 'Time');
-            data.addColumn('number', '°C');
-            data.addRows(tthis);
-            var options = {
-              hAxis: {
-                title: 'Time'
-              },
-              vAxis: {
-                title: '°C'
-              }
-            };
-            var chart = new google.visualization.LineChart(document.getElementById('tt_his'));
-            chart.draw(data, options);
-            }
-          }
-        });
-
-        $.ajax({
-        url: get_sensor_history + "?hh=1",
-        global: false,
-        type: 'GET',
-        dataType: 'text',
-        async: true,
-          success: function(text) {
-            hhhis = JSON.parse("[" + text + "]");
-            console.log(hhhis);
-            google.charts.setOnLoadCallback(drawBasic);
-            function drawBasic() {
-            var data = new google.visualization.DataTable();
-            data.addColumn('number', 'Time');
-            data.addColumn('number', '%');
-            data.addRows(hhhis);
-            var options = {
-              hAxis: {
-                title: 'Time'
-              },
-              vAxis: {
-                title: '%'
-              }
-            };
-            var chart = new google.visualization.LineChart(document.getElementById('hh_his'));
-            chart.draw(data, options);
-            }
-          }
-        });
-
-        $.ajax({
-        url: get_sensor_history + "?pp=1",
-        global: false,
-        type: 'GET',
-        dataType: 'text',
-        async: true,
-          success: function(text) {
-            pphis = JSON.parse("[" + text + "]");
-            console.log(pphis);
-            google.charts.setOnLoadCallback(drawBasic);
-            function drawBasic() {
-            var data = new google.visualization.DataTable();
-            data.addColumn('number', 'Time');
-            data.addColumn('number', 'W');
-            data.addRows(pphis);
-            var options = {
-              hAxis: {
-                title: 'Time'
-              },
-              vAxis: {
-                title: 'W'
-              }
-            };
-            var chart = new google.visualization.LineChart(document.getElementById('pp_his'));
-            chart.draw(data, options);
-            }
-          }
-        });
-      },
-
-      render() {
-        return (
+    render() {
+      return (
         <Grid>
         <Row className="well">
              <Pager>
@@ -363,5 +266,4 @@
     ReactDOM.render(<ButtonInput />, main);
     </script>
 </body>
-
 </html>
