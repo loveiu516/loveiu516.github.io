@@ -20,33 +20,33 @@
 </head>
 
 <body style="background-color:#00FFCC;">
-    <div id="main"></div>
-    <script type="text/babel">
-    var Label = ReactBootstrap.Label;
-    var ButtonToolbar = ReactBootstrap.ButtonToolbar;
-    var Button = ReactBootstrap.Button;
-    var Row = ReactBootstrap.Row;
-    var Col = ReactBootstrap.Col;
-    var Panel = ReactBootstrap.Panel;
-    var Grid = ReactBootstrap.Grid;
-    var Pager = ReactBootstrap.Pager;
-    var FormControl = ReactBootstrap.FormControl;
-    
-    var status="";
-    var light1 = "";
-    var light2 = "";
-    var light3 = "";
-    var light4 = "";
-    var light5 = "";
-    var light6 = "";
-    var light7 = "";
-    var light8 = "";
-    var pwd = "";
-    
-    
-    var getstatusURL = "https://spreadsheets.google.com/feeds/list/1B53JM_UjhF7kX9LuYhnncnVNMJaOX8DjLwBaRIsHblI/1/public/values?alt=json";
-    var get_timerURL = "https://script.google.com/macros/s/AKfycbwJUakfxufgx96j3oye5WGsTj7qVpIs0XqYqO5cp1Sq4_LqF_cn/exec";
-    var set_timerURL = "https://script.google.com/macros/s/AKfycbyLYkMhy02mDd5ARlgo8y_MrFBIt1f33Hx5zJTeoBBTiF8b_dXk/exec";
+	<div id="main"></div>
+	<script type="text/babel">
+	var Label = ReactBootstrap.Label;
+	var ButtonToolbar = ReactBootstrap.ButtonToolbar;
+	var Button = ReactBootstrap.Button;
+	var Row = ReactBootstrap.Row;
+	var Col = ReactBootstrap.Col;
+	var Panel = ReactBootstrap.Panel;
+	var Grid = ReactBootstrap.Grid;
+	var Pager = ReactBootstrap.Pager;
+	var FormControl = ReactBootstrap.FormControl;
+
+	var status="";
+	var light1 = "";
+	var light2 = "";
+	var light3 = "";
+	var light4 = "";
+	var light5 = "";
+	var light6 = "";
+	var light7 = "";
+	var light8 = "";
+	var pwd = "";
+
+
+	var getstatusURL = "https://spreadsheets.google.com/feeds/list/1B53JM_UjhF7kX9LuYhnncnVNMJaOX8DjLwBaRIsHblI/1/public/values?alt=json";
+	var get_timerURL = "https://script.google.com/macros/s/AKfycbwJUakfxufgx96j3oye5WGsTj7qVpIs0XqYqO5cp1Sq4_LqF_cn/exec";
+	var set_timerURL = "https://script.google.com/macros/s/AKfycbyLYkMhy02mDd5ARlgo8y_MrFBIt1f33Hx5zJTeoBBTiF8b_dXk/exec";
 
     class Main extends React.Component {
       handleChange = (e) => {
