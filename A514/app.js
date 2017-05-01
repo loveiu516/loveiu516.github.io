@@ -36,18 +36,18 @@ function initMQTT() {
     });
     client.on('message', function (topic, message) {
         if (topic == 'mcs/' + DeviceId + '/' + DeviceKey + '/light1') {
-            if (message.toString().split(',')[2] == "0") {
+            if (message.toString().split(',')[2] == "1") {
                 serialPort.write("light1on")
             }
-            if (message.toString().split(',')[2] == "1") {
+            if (message.toString().split(',')[2] == "0") {
                 serialPort.write("light1off")
             }
         }
         if (topic == 'mcs/' + DeviceId + '/' + DeviceKey + '/light2') {
-            if (message.toString().split(',')[2] == "0") {
+            if (message.toString().split(',')[2] == "1") {
                 serialPort.write("light2on")
             }
-            if (message.toString().split(',')[2] == "1") {
+            if (message.toString().split(',')[2] == "0") {
                 serialPort.write("light2off")
             }
         }
@@ -69,10 +69,10 @@ function getlight1lastdata() {
     const req = https.request(options, function (res) {
         res.on('data', function (d) {
             light1 = JSON.parse(d).dataChannels[0].dataPoints[0].values.value;
-            if (light1 == "0") {
+            if (light1 == "1") {
                 serialPort.write("light1on")
             }
-            if (light1 == "1") {
+            if (light1 == "0") {
                 serialPort.write("light1off")
             }
         });
@@ -94,10 +94,10 @@ function getlight2lastdata() {
     const req = https.request(options, function (res) {
         res.on('data', function (d) {
             light2 = JSON.parse(d).dataChannels[0].dataPoints[0].values.value;
-            if (light2 == "0") {
+            if (light2 == "1") {
                 serialPort.write("light2on")
             }
-            if (light2 == "1") {
+            if (light2 == "0") {
                 serialPort.write("light2off")
             }
         });
