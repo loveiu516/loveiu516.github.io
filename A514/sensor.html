@@ -59,6 +59,8 @@
 	var hh_time;
 	var ww_time;
 	var img_time;
+
+    var his_url = "https://script.google.com/macros/s/AKfycbyIqSVAzkJUShlwONs_BjopQn3eT9CPq83CbsnhbFpN0uFTWwJo/exec";
     
     var SetIntervalMixin = {
       componentWillMount(){
@@ -83,7 +85,8 @@
       this.getsensorhh();
       this.getsensorww();
       this.getimg();
-
+      this.gethis();
+      
       this.setInterval(this.getsensortt, 30000);
       this.setInterval(this.getsensorhh, 30000);
       this.setInterval(this.getsensorww, 30000);
@@ -215,6 +218,96 @@
         }
       });
     },
+
+    gethis(){
+        var tthis,hhhis,wwhis;
+        $.ajax({
+        url: his_url + "?sensor=tt",
+        global: false,
+        type: 'GET',
+        dataType: 'text',
+        async: true,
+          success: function(text) {
+            tthis = JSON.parse("[" + text + "]");
+            console.log(tthis);
+            google.charts.setOnLoadCallback(drawBasic);
+            function drawBasic() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', '');
+            data.addColumn('number', '溫度');
+            data.addRows(tthis);
+            var options = {
+              hAxis: {
+                title: ''
+              },
+              vAxis: {
+                title: '溫度(°C)'
+              }
+            };
+            var chart = new google.visualization.LineChart(document.getElementById('tt_his'));
+            chart.draw(data, options);
+            }
+          }
+        });
+        
+        $.ajax({
+        url: his_url + "?sensor=hh",
+        global: false,
+        type: 'GET',
+        dataType: 'text',
+        async: true,
+          success: function(text) {
+            hhhis = JSON.parse("[" + text + "]");
+            console.log(hhhis);
+            google.charts.setOnLoadCallback(drawBasic);
+            function drawBasic() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', '');
+            data.addColumn('number', '濕度');
+            data.addRows(hhhis);
+            var options = {
+              hAxis: {
+                title: ''
+              },
+              vAxis: {
+                title: '濕度(%)'
+              }
+            };
+            var chart = new google.visualization.LineChart(document.getElementById('hh_his'));
+            chart.draw(data, options);
+            }
+          }
+        });
+
+        $.ajax({
+        url: his_url + "?sensor=ww",
+        global: false,
+        type: 'GET',
+        dataType: 'text',
+        async: true,
+          success: function(text) {
+            hhhis = JSON.parse("[" + text + "]");
+            console.log(hhhis);
+            google.charts.setOnLoadCallback(drawBasic);
+            function drawBasic() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', '');
+            data.addColumn('number', '瓦');
+            data.addRows(hhhis);
+            var options = {
+              hAxis: {
+                title: ''
+              },
+              vAxis: {
+                title: '耗電(瓦)'
+              }
+            };
+            var chart = new google.visualization.LineChart(document.getElementById('ww_his'));
+            chart.draw(data, options);
+            }
+          }
+        });
+    },
     
     render() {
       return (
@@ -244,6 +337,15 @@
               </center>
               </Col>
               
+              <Col xs={12} md={12}>
+              <center>
+              <Panel header=<h0>昨日溫濕度曲線圖</h0> bsStyle="info">
+              <div id="tt_his"></div>
+              <div id="hh_his"></div>
+              <div id="ww_his"></div>
+              </Panel>
+              </center>
+              </Col>
 
               <Col xs={12} md={12}>
               <center>
