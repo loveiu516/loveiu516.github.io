@@ -60,7 +60,7 @@
 	var ww_time;
 	var img_time;
 
-    var his_url = "https://script.google.com/macros/s/AKfycbyIqSVAzkJUShlwONs_BjopQn3eT9CPq83CbsnhbFpN0uFTWwJo/exec";
+    var chart_data = "https://script.google.com/macros/s/AKfycbyIqSVAzkJUShlwONs_BjopQn3eT9CPq83CbsnhbFpN0uFTWwJo/exec";
     
     var SetIntervalMixin = {
       componentWillMount(){
@@ -219,23 +219,22 @@
       });
     },
 
-    gethis(){
-        var tthis,hhhis,wwhis;
+    getyes(){
+        var ttyes,hhyes,wwyes;
         $.ajax({
-        url: his_url + "?sensor=tt",
+        url: chart_data + "?sensor=tt",
         global: false,
         type: 'GET',
         dataType: 'text',
         async: true,
           success: function(text) {
-            tthis = JSON.parse("[" + text + "]");
-            console.log(tthis);
+            ttyes = JSON.parse("[" + text + "]");
             google.charts.setOnLoadCallback(drawBasic);
             function drawBasic() {
             var data = new google.visualization.DataTable();
             data.addColumn('number', '');
             data.addColumn('number', '溫度');
-            data.addRows(tthis);
+            data.addRows(ttyes);
             var options = {
               hAxis: {
                 title: ''
@@ -251,20 +250,19 @@
         });
         
         $.ajax({
-        url: his_url + "?sensor=hh",
+        url: chart_data + "?sensor=hh",
         global: false,
         type: 'GET',
         dataType: 'text',
         async: true,
           success: function(text) {
-            hhhis = JSON.parse("[" + text + "]");
-            console.log(hhhis);
+            hhyes = JSON.parse("[" + text + "]");
             google.charts.setOnLoadCallback(drawBasic);
             function drawBasic() {
             var data = new google.visualization.DataTable();
             data.addColumn('number', '');
             data.addColumn('number', '濕度');
-            data.addRows(hhhis);
+            data.addRows(hhyes);
             var options = {
               hAxis: {
                 title: ''
@@ -280,20 +278,106 @@
         });
 
         $.ajax({
-        url: his_url + "?sensor=ww",
+        url: chart_data + "?sensor=ww",
         global: false,
         type: 'GET',
         dataType: 'text',
         async: true,
           success: function(text) {
-            hhhis = JSON.parse("[" + text + "]");
-            console.log(hhhis);
+            wwyes = JSON.parse("[" + text + "]");
             google.charts.setOnLoadCallback(drawBasic);
             function drawBasic() {
             var data = new google.visualization.DataTable();
             data.addColumn('number', '');
             data.addColumn('number', '瓦');
-            data.addRows(hhhis);
+            data.addRows(wwyes);
+            var options = {
+              hAxis: {
+                title: ''
+              },
+              vAxis: {
+                title: '耗電(瓦)'
+              }
+            };
+            var chart = new google.visualization.LineChart(document.getElementById('ww_his'));
+            chart.draw(data, options);
+            }
+          }
+        });
+    },
+    
+    getyes(){
+    	var tttod,hhtod,wwtod;
+        $.ajax({
+        url: chart_data + "?sensor=tt",
+        global: false,
+        type: 'GET',
+        dataType: 'text',
+        async: true,
+          success: function(text) {
+            tttod = JSON.parse("[" + text + "]");
+            google.charts.setOnLoadCallback(drawBasic);
+            function drawBasic() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', '');
+            data.addColumn('number', '溫度');
+            data.addRows(tttod);
+            var options = {
+              hAxis: {
+                title: ''
+              },
+              vAxis: {
+                title: '溫度(°C)'
+              }
+            };
+            var chart = new google.visualization.LineChart(document.getElementById('tt_his'));
+            chart.draw(data, options);
+            }
+          }
+        });
+        
+        $.ajax({
+        url: chart_data + "?sensor=hh",
+        global: false,
+        type: 'GET',
+        dataType: 'text',
+        async: true,
+          success: function(text) {
+            hhtod = JSON.parse("[" + text + "]");
+            google.charts.setOnLoadCallback(drawBasic);
+            function drawBasic() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', '');
+            data.addColumn('number', '濕度');
+            data.addRows(hhtod);
+            var options = {
+              hAxis: {
+                title: ''
+              },
+              vAxis: {
+                title: '濕度(%)'
+              }
+            };
+            var chart = new google.visualization.LineChart(document.getElementById('hh_his'));
+            chart.draw(data, options);
+            }
+          }
+        });
+
+        $.ajax({
+        url: chart_data + "?sensor=ww",
+        global: false,
+        type: 'GET',
+        dataType: 'text',
+        async: true,
+          success: function(text) {
+            wwtod = JSON.parse("[" + text + "]");
+            google.charts.setOnLoadCallback(drawBasic);
+            function drawBasic() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', '');
+            data.addColumn('number', '瓦');
+            data.addRows(wwtod);
             var options = {
               hAxis: {
                 title: ''
@@ -336,13 +420,23 @@
               <div id="ww_show"></div>
               </center>
               </Col>
-              
+	      
+	      <Col xs={12} md={12}>
+              <center>
+              <Panel header=<h0>今日曲線圖</h0> bsStyle="info">
+              <div id="tt_t"></div>
+              <div id="hh_t"></div>
+              <div id="ww_t"></div>
+              </Panel>
+              </center>
+              </Col>
+	      
               <Col xs={12} md={12}>
               <center>
-              <Panel header=<h0>昨日溫濕度曲線圖</h0> bsStyle="info">
-              <div id="tt_his"></div>
-              <div id="hh_his"></div>
-              <div id="ww_his"></div>
+              <Panel header=<h0>昨日曲線圖</h0> bsStyle="info">
+              <div id="tt_y"></div>
+              <div id="hh_y"></div>
+              <div id="ww_y"></div>
               </Panel>
               </center>
               </Col>
