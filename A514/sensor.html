@@ -85,7 +85,8 @@
       this.getsensorhh();
       this.getsensorww();
       this.getimg();
-      this.gethis();
+      this.gettod();
+      this.getyes();
       
       this.setInterval(this.getsensortt, 30000);
       this.setInterval(this.getsensorhh, 30000);
@@ -306,10 +307,10 @@
         });
     },
     
-    getyes(){
+    gettod(){
     	var tttod,hhtod,wwtod;
         $.ajax({
-        url: chart_data + "?sensor=tt",
+        url: chart_data + "?sensor=tt&day=t",
         global: false,
         type: 'GET',
         dataType: 'text',
@@ -337,7 +338,7 @@
         });
         
         $.ajax({
-        url: chart_data + "?sensor=hh",
+        url: chart_data + "?sensor=hh&day=t",
         global: false,
         type: 'GET',
         dataType: 'text',
@@ -365,7 +366,7 @@
         });
 
         $.ajax({
-        url: chart_data + "?sensor=ww",
+        url: chart_data + "?sensor=ww&day=t",
         global: false,
         type: 'GET',
         dataType: 'text',
