@@ -3,8 +3,8 @@ var https = require('https');
 var mqtt = require('mqtt');
 var fs = require('fs');
 
-var DeviceId = "DcOTP6gp";
-var DeviceKey = "GBcYRMAaBj2kz8uE";
+var DeviceId = "";
+var DeviceKey = "";
 
 var SerialPort = require("serialport").SerialPort;
 var serialPort = new SerialPort("/dev/ttyS0", {
