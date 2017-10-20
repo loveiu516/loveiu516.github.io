@@ -5,7 +5,7 @@ mkdir ./cookie
 mkdir ./temp
 ip="$(cat ./ip)"
 
-curl -s -k -D ./cookie/apiuser_cookie https://apiuser:apiuser@192.168.81.188:8443/airframe/main/v1/login -w "%{http_code}" -o ./temp/res.txt > ./temp/sta.txt
+curl -s -k -D ./cookie/apiuser_cookie https://apiuser:apiuser@$ip:8443/airframe/main/v1/login -w "%{http_code}" -o ./temp/res.txt > ./temp/sta.txt
 sta="$(cat ./temp/sta.txt)"
 if [ "$sta" = "200" ]; then
 echo "200 GET apiuser_cookie PASS"
@@ -18,7 +18,7 @@ sta=""
 
 timestamp=`date +%s`
 json={\"username\":\"Api$timestamp\",\"password\":\"Api\",\"userGroup\":\"admin\",\"enabled\":true}
-curl -s -k -b ./cookie/apiuser_cookie -X POST https://192.168.81.188:8443/airframe/main/v1/user/create/local -d $json -H 'Content-Type: application/json' -w "%{http_code}" -o ./temp/res.txt > ./temp/sta.txt
+curl -s -k -b ./cookie/apiuser_cookie -X POST https://$ip:8443/airframe/main/v1/user/create/local -d $json -H 'Content-Type: application/json' -w "%{http_code}" -o ./temp/res.txt > ./temp/sta.txt
 sta="$(cat ./temp/sta.txt)"
 res="$(cat ./temp/res.txt)"
 if [ "$sta" = "200" ]; then
@@ -43,7 +43,7 @@ res=""
 json=""
 
 
-curl -s -k -b ./cookie/apiuser_cookie https://192.168.81.188:8443/airframe/main/v1/user/all -w "%{http_code}" -o ./temp/res.txt > ./temp/sta.txt
+curl -s -k -b ./cookie/apiuser_cookie https://$ip:8443/airframe/main/v1/user/all -w "%{http_code}" -o ./temp/res.txt > ./temp/sta.txt
 sta="$(cat ./temp/sta.txt)"
 res="$(cat ./temp/res.txt)"
 if [ "$sta" = "200" ]; then
@@ -70,7 +70,7 @@ fi
 key=""
 
 
-curl -s -k -D ./cookie/Api$timestamp\_cookie https://Api$timestamp:Api@192.168.81.188:8443/airframe/main/v1/login -w "%{http_code}" -o ./temp/res.txt > ./temp/sta.txt
+curl -s -k -D ./cookie/Api$timestamp\_cookie https://Api$timestamp:Api@$ip:8443/airframe/main/v1/login -w "%{http_code}" -o ./temp/res.txt > ./temp/sta.txt
 sta="$(cat ./temp/sta.txt)"
 if [ "$sta" = "200" ]; then
 echo "200 GET Api$timestamp"_cookie" PASS"
@@ -81,7 +81,7 @@ exit 1
 fi
 sta=""
 
-curl -s -k -b ./cookie/Api$timestamp\_cookie -X DELETE https://192.168.81.188:8443/airframe/main/v1/user/$userId -w "%{http_code}" -o ./temp/res.txt > ./temp/sta.txt
+curl -s -k -b ./cookie/Api$timestamp\_cookie -X DELETE https://$ip:8443/airframe/main/v1/user/$userId -w "%{http_code}" -o ./temp/res.txt > ./temp/sta.txt
 sta="$(cat ./temp/sta.txt)"
 res="$(cat ./temp/res.txt)"
 if [ "$sta" = "204" ]; then
